@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/email/email",
+    "pages/filestore/filestore"
+  ],
+  "window": {
+    "navigationStyle": "custom"
+  },
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  },
+  "tabBar": {
+    "backgroundColor": "#ffffff",
+    "color": "#bfbfbf",
+    "selectedColor": "#666666",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "作业",
+        "iconPath": "images/work2.png",
+        "selectedIconPath": "images/work1.png"
+      },
+      {
+        "pagePath": "pages/filestore/filestore",
+        "text": "文件",
+        "iconPath": "images/file2.png",
+        "selectedIconPath": "images/file1.png"
+      },
+      {
+        "pagePath": "pages/email/email",
+        "text": "邮件",
+        "iconPath": "images/email2.png",
+        "selectedIconPath": "images/email1.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}
