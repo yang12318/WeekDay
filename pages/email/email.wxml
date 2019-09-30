@@ -1,2 +1,4 @@
 <!--pages/email/email.wxml-->
-<text>pages/email/email.wxml</text>
+<cu-custom bgColor="bg-gradual-lightorange" isBack="{{false}}">
+	<view slot="content">EMAIL</view>
+</cu-custom>

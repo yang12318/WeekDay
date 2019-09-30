@@ -1,2 +1,4 @@
 <!--pages/filestore/filestore.wxml-->
-<text>pages/filestore/filestore.wxml</text>
+<cu-custom bgColor="bg-gradual-lightorange" isBack="{{false}}">
+	<view slot="content">FILE</view>
+</cu-custom>
