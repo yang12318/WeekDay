@@ -1,0 +1,26 @@
+<!--pages/editwork/editwork.wxml-->
+<cu-custom bgColor="bg-gradual-lightorange" isBack="{{true}}">
+  <view slot="backText">返回</view>
+</cu-custom>
+<form bindsubmit='savePlan' report-submit='true'>
+    <view class="cu-form-group solid-bottom">
+      <view class="title">科目</view>
+      <input placeholder="1-5字" name="title" value="{{title}}"></input>
+    </view>
+    <view class="cu-form-group solid-bottom">
+      <view class="title">内容</view>
+      <input placeholder="1-17字" name="desp" value="{{desp}}"></input>
+    </view>
+    <view class="cu-form-group solid-bottom">
+      <view class="title">截止日期</view>
+      <picker mode="date" value="{{date}}" start="{{startdate}}" end="2030-12-31" bindchange="DateChange" name="date">
+        <view class="picker">
+          {{date}}
+        </view>
+      </picker>
+    </view>
+    <view class="cu-bar btn-group bg-white">
+      <button class="cu-btn bg-grey" bindtap="tabDelete">取消</button>
+      <button class="cu-btn bg-cyan" form-type='submit'>保存</button>
+    </view>
+  </form>

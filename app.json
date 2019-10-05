@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/email/email",
-    "pages/filestore/filestore"
+    "pages/filestore/filestore",
+    "pages/editwork/editwork"
   ],
   "window": {
     "navigationStyle": "custom"

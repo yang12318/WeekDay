@@ -1,1 +1,8 @@
 /**index.wxss**/
+.post {
+    float: right;
+    position: fixed;
+    bottom: 20px;
+    right: 15px;
+    box-shadow: 2px 1px 1px #cccccc;
+}

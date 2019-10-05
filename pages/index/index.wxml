@@ -1,91 +1,118 @@
 <!--index.wxml-->
 <cu-custom bgColor="bg-gradual-lightorange" isBack="{{false}}">
-	<view slot="content">HOMEWORK</view>
+  <view slot="content">HOMEWORK</view>
 </cu-custom>
 <scroll-view scroll-x class="bg-white nav">
   <view class="flex text-center">
     <view class="cu-item flex-sub {{0==TabCur?'text-orange cur':''}}" bindtap="tabSelect" data-id="0">
-    今日
-  </view>
-  <view class="cu-item flex-sub {{1==TabCur?'text-orange cur':''}}" bindtap="tabSelect" data-id="1">
-    最近
-  </view>
+    未完成
+    </view>
+    <view class="cu-item flex-sub {{1==TabCur?'text-orange cur':''}}" bindtap="tabSelect" data-id="1">
+    已完成
+    </view>
   </view>
 </scroll-view>
 <block wx:if="{{TabCur==0}}">
-  <view class="cu-bar bg-white solid-bottom margin-top-xs" wx:if="{{condition0}}">
-    <view class='action'>
-      <text class='cuIcon-titles text-cyan '></text> 任意时间
-    </view>
-  </view>
-  <view class="cu-list menu-avatar" wx:for="{{allTime}}" wx:for-index="index" wx:if="{{condition0}}">
-    <view class="cu-item" data-id="{{item.id}}" data-flag="{{item.flag_today}}" data-index="{{index}}" bindtap='click'>
-      <image src="{{iconList[item.icon].icon}}" class="cu-avatar round lg"></image>
-      <view class="content">
-        <view class="text-gray text-sl flex">
-          <text class="text-cut">
-							<text class="margin-right-s text-xl">{{item.name}}</text>
-          </text>
-        </view>
-        <view class="text-gray text-sm flex">
-          <text class="text-cut">
-							<text class="margin-right-s" wx:if="{{item.flag_today}}">已打卡</text>
-              <text class="margin-right-s" wx:if="{{!item.flag_today}}">未打卡</text>
-          </text>
-        </view>
-      </view>
-      <view class="action">
-        <text class="text-grey text-xl">{{item.insistDays}}天</text>
-        <view class="margin-left-s text-xs text-grey">已连续</view>
+  <view wx:for="{{unfinished}}" wx:for-index="index" wx:for-term="term"  wx:if="{{condition22}}">
+    <view class="li" data-index="{{index}}" bindtap='changeToggle2'>
+      <view class="left text-grey">{{item.date}}</view>
+      <view class="right">
+          <text class="cuIcon {{selectedFlag2[index]?'cuIcon-unfold':'cuIcon-fold'}}"> </text>
       </view>
     </view>
+    <view hidden="{{!selectedFlag2[index]}}">
+      <!--view class="cu-list menu-avatar">
+        <block wx:for="{{item.list}}" wx:for-item="subitem" wx:for-index="subindex">
+          <view class="cu-item solid-bottom">
+            <image src="images/icon.png" class="cu-avatar round lg"></image>
+            <view class="content">
+              <view class="text-grey">
+                <text class="margin-right-s text-l">{{subitem.title}}</text>
+              </view>
+              <view class="text-gray text-sm flex">
+                <text class="text-cut">
+							    <text class="margin-right-s"></text>{{item.desp}}
+                </text>
+              </view>
+            </view>
+            <view class="action" bindtap="reviseWork" data-id="{{subitem.id}}">
+              <view class="text-grey lg cuIcon-post"></view>
+            </view>
+          </view>
+        </block>
+      </view-->
+      <view class="cu-list menu-avatar">
+        <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{4}}" wx:key bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}">
+          <image src="images/icon.png" class="cu-avatar round lg"></image>
+          <view class="content">
+            <view class="text-grey">
+                <text class="margin-right-s text-l">{{subitem.title}}</text>
+            </view>
+            <view class="text-gray text-sm flex">
+              <text class="text-cut">
+                <text class="margin-right-s"></text>{{item.desp}}
+              </text>
+            </view>
+          </view>
+          <view class="move">
+            <view class="bg-grey">编辑</view>
+            <view class="bg-red">删除</view>
+          </view>
+        </view>
+      </view>
+    </view>
   </view>
+  <button class="cu-btn icon bg-orange xlg post">
+    <text class="cuIcon-add"></text>
+  </button>
 </block>
 
 <block wx:if="{{TabCur==1}}">
-  <view class="cu-bar bg-white margin-top-xs solid-bottom" wx:if="{{condition11}}">
-    <view class='action'>
-      <text class='cuIcon-titles text-cyan '></text> 已完成
-    </view>
-  </view>
- <view class="cu-list menu-avatar" wx:for="{{finished}}" wx:if="{{condition11}}" wx:for-index="index">
-    <view class="cu-item solid-bottom" bindtap='cancelFinish' data-id="{{item.id}}" data-index="{{index}}">
-      <image src="{{iconList2[item.icon].icon}}" class="cu-avatar round lg"></image>
-      <view class="content">
-        <view class="text-grey">
-						<text class="margin-right-s text-l">{{item.title}}</text>
-        </view>
-        <view class="text-gray text-sm flex">
-          <text class="text-cut">
-							<text class="margin-right-s"></text>{{item.desp}}
-          </text>
-        </view>
-      </view>
-      <view class="action">
-        <view class="text-grey lg cuIcon-post" bindtap='revise' data-id="{{item.id}}"></view>
+  <view wx:for="{{finished}}" wx:for-index="index" wx:for-term="term"  wx:if="{{condition11}}">
+    <view class="li" data-index="{{index}}" bindtap='changeToggle'>
+      <view class="left text-grey">{{item.date}}</view>
+      <view class="right">
+          <text class="cuIcon {{selectedFlag[index]?'cuIcon-unfold':'cuIcon-fold'}}"> </text>
       </view>
     </view>
-    </view>
-  <view class="cu-bar bg-white margin-top-xs solid-bottom" wx:if="{{condition22}}">
-    <view class='action'>
-      <text class='cuIcon-titles text-cyan '></text> 未完成
-    </view>
-  </view>
-  <view class="cu-list menu-avatar" wx:for="{{unfinished}}" wx:for-index="index" wx:if="{{condition22}}">
-    <view class="cu-item" data-id="{{item.id}}" data-index="{{index}}">
-      <image src="{{iconList2[item.icon].icon}}" bindtap='finish' data-id="{{item.id}}" class="cu-avatar round lg"></image>
-      <view class="content" bindtap='finish' data-id="{{item.id}}">
-        <view class="text-grey">
-            <text class="margin-right-s text-l">{{item.title}}</text>
+    <view hidden="{{!selectedFlag[index]}}">
+      <!--view class="cu-list menu-avatar">
+        <block wx:for="{{item.list}}" wx:for-item="subitem" wx:for-index="subindex">
+          <view class="cu-item solid-bottom">
+            <image src="images/icon.png" class="cu-avatar round lg"></image>
+            <view class="content">
+              <view class="text-grey">
+                  <text class="margin-right-s text-l">{{subitem.title}}</text>
+              </view>
+              <view class="text-gray text-sm flex">
+                <text class="text-cut">
+							    <text class="margin-right-s"></text>{{item.desp}}
+                </text>
+              </view>
+            </view>
+            <view class="action" data-id="{{subitem.id}}" bindtap='deleteWork'>
+              <view class="text-grey lg cuIcon-delete"></view>
+            </view>
+          </view>
+        </block>
+      </view-->
+      <view class="cu-list menu-avatar">
+        <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{4}}" wx:key bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}">
+          <image src="images/icon.png" class="cu-avatar round lg"></image>
+          <view class="content">
+            <view class="text-grey">
+                <text class="margin-right-s text-l">{{subitem.title}}</text>
+            </view>
+            <view class="text-gray text-sm flex">
+              <text class="text-cut">
+                <text class="margin-right-s"></text>{{item.desp}}
+              </text>
+            </view>
+          </view>
+          <view class="move">
+            <view class="bg-red">删除</view>
+          </view>
         </view>
-        <view class="text-gray text-sm flex">
-          <text class="text-cut">
-              <text class="margin-right-s"></text>{{item.desp}}
-          </text>
-        </view>
-      </view>
-      <view class="action" bindtap='revise' data-id="{{item.id}}">
-        <view class="text-grey lg cuIcon-post"></view>
       </view>
     </view>
   </view>
