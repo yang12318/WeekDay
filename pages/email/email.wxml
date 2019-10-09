@@ -2,3 +2,30 @@
 <cu-custom bgColor="bg-gradual-lightorange" isBack="{{false}}">
 	<view slot="content">EMAIL</view>
 </cu-custom>
+<view class="cu-list menu ">
+  <view class="cu-item">
+    <view class="content">
+      <image src="/images/sina.png" class="png" mode="aspectFit"></image>
+    </view>
+  </view>
+  <view class="cu-item">
+    <view class="content">
+      <image src="/images/exchange.png" class="png" mode="aspectFit"></image>
+    </view>
+  </view>
+  <view class="cu-item">
+    <view class="content">
+      <image src="/images/126.png" class="png" mode="aspectFit"></image>
+    </view>
+  </view>
+  <view class="cu-item">
+    <view class="content">
+      <image src="/images/163.png" class="png" mode="aspectFit"></image>
+    </view>
+  </view>
+  <view class="cu-item">
+    <view class="content">
+      <image src="/images/QQ.png" class="png" mode="aspectFit"></image>
+    </view>
+  </view>
+</view>

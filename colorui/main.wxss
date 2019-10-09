@@ -1453,9 +1453,9 @@ button.icon.xlg {
 
 .cu-list.menu>.cu-item .content>image {
 	display: inline-block;
-	margin-right: 10rpx;
-	width: 1.6em;
-	height: 1.6em;
+	width: 10em;
+	height: 6em;
+  margin-left: 200rpx;
 	vertical-align: middle
 }
 
