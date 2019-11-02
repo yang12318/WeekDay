@@ -1,0 +1,4 @@
+<!--pages/detail/detail.wxml-->
+<cu-custom bgColor="bg-gradual-lightorange" isBack="{{true}}">
+  <view slot="backText">返回</view>
+</cu-custom>

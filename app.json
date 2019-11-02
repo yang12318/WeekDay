@@ -4,7 +4,10 @@
     "pages/logs/logs",
     "pages/email/email",
     "pages/filestore/filestore",
-    "pages/editwork/editwork"
+    "pages/editwork/editwork",
+    "pages/login/login",
+    "pages/detail/detail",
+    "pages/add/add"
   ],
   "window": {
     "navigationStyle": "custom"
@@ -30,7 +33,7 @@
         "selectedIconPath": "images/file1.png"
       },
       {
-        "pagePath": "pages/email/email",
+        "pagePath": "pages/login/login",
         "text": "邮件",
         "iconPath": "images/email2.png",
         "selectedIconPath": "images/email1.png"
