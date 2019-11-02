@@ -23,4 +23,4 @@
       <button class="cu-btn bg-grey" bindtap="tabDelete">取消</button>
       <button class="cu-btn bg-cyan" form-type='submit'>保存</button>
     </view>
-  </form>
+</form>

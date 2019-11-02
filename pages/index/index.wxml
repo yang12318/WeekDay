@@ -62,7 +62,7 @@
       </view>
     </view>
   </view>
-  <button class="cu-btn icon bg-orange xlg post">
+  <button class="cu-btn icon bg-orange xlg post" bindtap='add'>
     <text class="cuIcon-add"></text>
   </button>
 </block>
