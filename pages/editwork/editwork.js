@@ -39,8 +39,8 @@ Page({
    */
   onLoad: function (options) {
     kind = options.kind
-    console.log("kind="+kind)
-    if(kind == 1) {
+    console.log("kind=" + kind)
+    if (kind == 1) {
       id = options.id
       that.setData({
         title: options.title,
@@ -142,9 +142,9 @@ Page({
     var temp = e.detail.value.date
     temp = temp.substr(0, 4) + temp.substr(5, 2) + temp.substr(8, 2)
     //console.log(temp)
-    let token = getApp().globalData.token;
+    let token = wx.getStorageSync('token')
     console.log(kind)
-    if(kind == 0) {
+    if (kind == 0) {
       console.log("here")
       wx.request({
         url: ip,
@@ -190,7 +190,7 @@ Page({
           })
         }
       })
-    } else if(kind == 1){
+    } else if (kind == 1) {
       //此处应该为修改
       console.log("there")
       wx.request({
@@ -210,10 +210,10 @@ Page({
           'Content-Type': 'application/json',
           'token': token
         },
-        success: function(res) {
+        success: function (res) {
           var code = res.data.code
           var message = res.data.msg
-          if(code != 0) {
+          if (code != 0) {
             wx.showToast({
               title: message
             })
@@ -224,7 +224,7 @@ Page({
             })
           }
         },
-        fail:function(res) {
+        fail: function (res) {
           wx.showToast({
             title: '网络连接失败',
             icon: 'none'

@@ -1,44 +1,29 @@
 // pages/manage/manage.js
 let ip = 'http://62.234.134.58:8080/weekday/homework/homework';
-var selectedFlag = []
-var selectedFlag2 = []
+var selectedFlag = []         //undone
+var selectedFlag2 = []        //done
 function refresh(that) {
-  let token = getApp().globalData.token;
+  let token = wx.getStorageSync('token');
+  console.log('这里token是' + token)
   wx.request({
     url: ip,
     method: 'GET',
-    success: function (res) {
-      that.setData({
-        unfinished: res.data.data.undone,
-        finished: res.data.data.done,
-        condition0: (Object.keys(res.data.data.undone).length != 0),
-        condition1: (Object.keys(res.data.data.done).length != 0),
-      })
+    header: {
+      'token': token
     },
-    fail: function (res) {
-      wx.showToast({
-        title: '网络连接失败',
-        icon: 'none'
-      })
-    }
-  })
-}
-function refreshPlan(that) {
-  let token = getApp().globalData.token;
-  wx.request({
-    url: ip + '/api/plan/getplan?kind=2&token=' + token,
     success: function (res) {
-      for (let i = 0, m = res.data.finished.length; i < m; i++) {
+      console.log(res.data)
+      for (let i = 0, m = res.data.data.undone.length; i < m; i++) {
         selectedFlag.push(false)
       }
-      for (let i = 0, m = res.data.unfinished.length; i < m; i++) {
+      for (let i = 0, m = res.data.data.done.length; i < m; i++) {
         selectedFlag2.push(false)
       }
       that.setData({
-        finished: res.data.finished,
-        unfinished: res.data.unfinished,
-        condition11: (Object.keys(res.data.finished).length != 0),
-        condition22: (Object.keys(res.data.unfinished).length != 0),
+        finished: res.data.data.done,
+        unfinished: res.data.data.undone,
+        condition11: (Object.keys(res.data.data.done).length != 0),
+        condition22: (Object.keys(res.data.data.undone).length != 0),
         selectedFlag: selectedFlag,
         selectedFlag2: selectedFlag2
       })
@@ -63,21 +48,42 @@ Page({
     selectedFlag2: [true, true, true, true],
     scrollLeft: 0
   },
+  // ListTouch触摸开始
+  ListTouchStart(e) {
+    this.setData({
+      ListTouchStart: e.touches[0].pageX
+    })
+  },
+
+  // ListTouch计算方向
+  ListTouchMove(e) {
+    this.setData({
+      ListTouchDirection: e.touches[0].pageX - this.data.ListTouchStart > 0 ? 'right' : 'left'
+    })
+  },
+
+  // ListTouch计算滚动
+  ListTouchEnd(e) {
+    if (this.data.ListTouchDirection == 'left') {
+      this.setData({
+        modalName: e.currentTarget.dataset.target
+      })
+    } else {
+      this.setData({
+        modalName: null
+      })
+    }
+    this.setData({
+      ListTouchDirection: null
+    })
+  },
   tabSelect(e) {
     this.setData({
       TabCur: e.currentTarget.dataset.id,
       scrollLeft: (e.currentTarget.dataset.id - 1) * 60
     })
-    if (e.currentTarget.dataset.id == 0) {
-      //习惯
-      var that = this
-      refreshHabit(that)
-    } else {
-      //计划
-      var that = this
-      refreshPlan(that)
-    }
-
+    var that = this
+    refresh(that)
   },
   // 展开折叠选择  
   changeToggle: function (e) {
@@ -87,7 +93,6 @@ Page({
     } else {
       this.data.selectedFlag[index] = true;
     }
-
     this.setData({
       selectedFlag: this.data.selectedFlag
     })
@@ -99,7 +104,6 @@ Page({
     } else {
       this.data.selectedFlag2[index] = true;
     }
-
     this.setData({
       selectedFlag2: this.data.selectedFlag2
     })
@@ -171,7 +175,7 @@ Page({
 
       //这个等晓洋去问
 
-      url: '../editwork/editwork?kind=1&id=' + id + '&title=' + title + '&desp=' + desp + '&date=' + date ,
+      url: '../editwork/editwork?kind=1&id=' + id + '&title=' + title + '&desp=' + desp + '&date=' + date,
       success: function (res) { },
       fail: function (res) { },
       complete: function (res) { },

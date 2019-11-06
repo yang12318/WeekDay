@@ -24,7 +24,7 @@ App({
             header: {
               'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
             },
-            method: 'POST', 
+            method: 'POST',
             success: function (res) {
               console.log(res.data)
               var code = res.data.code
@@ -45,15 +45,10 @@ App({
               }
               var token = res.data.token
               console.log(token)
-              wx.setStorage({
-                key: 'token',
-                data: token,
-              })
+              wx.setStorageSync('token', token)
               wx.showToast({
                 title: '登录成功',
               })
-              that.globalData.token = encodeURIComponent(wx.getStorageSync('token'));
-
             },
             fail: function (res) {
               wx.showToast({

@@ -21,38 +21,13 @@
       </view>
     </view>
     <view hidden="{{!selectedFlag2[index]}}">
-      <!--view class="cu-list menu-avatar">
-        <block wx:for="{{item.list}}" wx:for-item="subitem" wx:for-index="subindex">
-          <view class="cu-item solid-bottom">
-            <image src="images/icon.png" class="cu-avatar round lg"></image>
-            <view class="content">
-              <view class="text-grey">
-                <text class="margin-right-s text-l">{{subitem.title}}</text>
-              </view>
-              <view class="text-gray text-sm flex">
-                <text class="text-cut">
-							    <text class="margin-right-s"></text>{{item.desp}}
-                </text>
-              </view>
-            </view>
-            <view class="action" bindtap="reviseWork" data-id="{{subitem.id}}">
-              <view class="text-grey lg cuIcon-post"></view>
-            </view>
-          </view>
-        </block>
-      </view-->
       <view class="cu-list menu-avatar">
-        <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{4}}" wx:key bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}">
-          <image src="images/icon.png" class="cu-avatar round lg"></image>
+        <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:key bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}" wx:for="{{item.list}}" wx:for-item="subitem">
+          <image src="/images/icon.png" class="cu-avatar round lg"></image>
           <view class="content">
-            <view class="text-grey">
-                <text class="margin-right-s text-l">{{subitem.title}}</text>
-            </view>
-            <view class="text-gray text-sm flex">
-              <text class="text-cut">
-                <text class="margin-right-s"></text>{{item.desp}}
-              </text>
-            </view>
+            <view class="text-grey">{{subitem.title}}</view>
+            <view class="text-gray text-sm">
+              <text class="text-red"></text> {{subitem.content}}</view>
           </view>
           <view class="move">
             <view class="bg-grey">编辑</view>
@@ -76,36 +51,16 @@
       </view>
     </view>
     <view hidden="{{!selectedFlag[index]}}">
-      <!--view class="cu-list menu-avatar">
-        <block wx:for="{{item.list}}" wx:for-item="subitem" wx:for-index="subindex">
-          <view class="cu-item solid-bottom">
-            <image src="images/icon.png" class="cu-avatar round lg"></image>
-            <view class="content">
-              <view class="text-grey">
-                  <text class="margin-right-s text-l">{{subitem.title}}</text>
-              </view>
-              <view class="text-gray text-sm flex">
-                <text class="text-cut">
-							    <text class="margin-right-s"></text>{{item.desp}}
-                </text>
-              </view>
-            </view>
-            <view class="action" data-id="{{subitem.id}}" bindtap='deleteWork'>
-              <view class="text-grey lg cuIcon-delete"></view>
-            </view>
-          </view>
-        </block>
-      </view-->
       <view class="cu-list menu-avatar">
-        <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{4}}" wx:key bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}">
-          <image src="images/icon.png" class="cu-avatar round lg"></image>
+        <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:key bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}" wx:for="{{item.list}}" wx:for-item="subitem">
+          <image src="/images/icon.png" class="cu-avatar round lg"></image>
           <view class="content">
             <view class="text-grey">
                 <text class="margin-right-s text-l">{{subitem.title}}</text>
             </view>
             <view class="text-gray text-sm flex">
               <text class="text-cut">
-                <text class="margin-right-s"></text>{{item.desp}}
+                <text class="margin-right-s"></text>{{subitem.content}}
               </text>
             </view>
           </view>

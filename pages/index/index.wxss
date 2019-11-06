@@ -6,3 +6,21 @@
     right: 15px;
     box-shadow: 2px 1px 1px #cccccc;
 }
+.li {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  font-size: 34rpx;
+  width: 100%;
+  padding: 0 4%;
+  height: 80rpx;
+  line-height: 100rpx;
+  border-bottom: 1rpx solid #f1f1f1;
+}
+.bg-gray{
+    background-color: #fcfcfa!important;
+    border-bottom: 1rpx solid  #fff!important;
+}
+.gray {
+  color: #e7e5e5;
+}
