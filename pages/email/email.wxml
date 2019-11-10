@@ -13,7 +13,7 @@
   </view>
 </scroll-view>
 <block wx:if="{{TabCur==0}}">
-  <view class="cu-list menu-avatar" wx:for="{{finished}}" wx:if="{{condition11}}" wx:for-index="index">
+  <view class="cu-list menu-avatar" wx:for="{{inbox}}" wx:if="{{condition1}}" wx:for-index="index">
     <view class="cu-item solid-bottom" data-id="{{item.id}}" data-index="{{index}}">
       <view class="content">
         <view class="text-grey">
@@ -29,16 +29,13 @@
               <text class="margin-right-s"></text>{{item.date}}
           </text>
         </view>
-      </view>
-      <view class="action">
-        <view class="text-grey lg cuIcon-post" bindtap='revise' data-id="{{item.id}}"></view>
       </view>
     </view>
   </view>
 </block>
 
 <block wx:if="{{TabCur==1}}">
-  <view class="cu-list menu-avatar" wx:for="{{finished}}" wx:if="{{condition11}}" wx:for-index="index">
+  <view class="cu-list menu-avatar" wx:for="{{finished}}" wx:if="{{condition2}}" wx:for-index="index">
     <view class="cu-item solid-bottom" data-id="{{item.id}}" data-index="{{index}}">
       <view class="content">
         <view class="text-grey">
@@ -54,9 +51,6 @@
               <text class="margin-right-s"></text>{{item.date}}
           </text>
         </view>
-      </view>
-      <view class="action">
-        <view class="text-grey lg cuIcon-post" bindtap='revise' data-id="{{item.id}}"></view>
       </view>
     </view>
   </view>

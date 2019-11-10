@@ -1,4 +1,46 @@
 // pages/email/email.js
+var ip = 'http://62.234.134.58:8080/weekday/mail/mailPre'
+function refreshInbox(that) {
+  let token = wx.getStorageSync('token')
+  wx.request({
+    url: ip,
+    method: 'GET',
+    header: {
+      'token': token
+    },
+    data: {
+      'mailboxId': '???',
+      'folderName': 'INBOX'
+    },
+    success: function(res) {
+      var code = res.data.code
+      var msg = res.data.msg
+      if(code != 0) {
+        wx.showToast({
+          title: msg,
+          icon: 'none'
+        })
+        return
+      }
+      wx.showToast({
+        title: msg,
+      })
+      
+    },
+    fail: function(res) {
+      wx.showToast({
+        title: '网络连接失败',
+        icon: 'none'
+      })
+    }
+  })
+}
+
+function refreshSent(that) {
+  
+
+}
+
 Page({
 
   /**

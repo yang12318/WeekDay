@@ -30,8 +30,8 @@
               <text class="text-red"></text> {{subitem.content}}</view>
           </view>
           <view class="move">
-            <view class="bg-grey">编辑</view>
-            <view class="bg-red">删除</view>
+            <view class="bg-grey" bindtap='revise'>编辑</view>
+            <view class="bg-red" bindtap='delete'>删除</view>
           </view>
         </view>
       </view>
@@ -65,7 +65,7 @@
             </view>
           </view>
           <view class="move">
-            <view class="bg-red">删除</view>
+            <view class="bg-red" bindtap='delete'>删除</view>
           </view>
         </view>
       </view>

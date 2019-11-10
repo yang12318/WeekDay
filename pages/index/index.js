@@ -1,3 +1,6 @@
+//添加之后再回来的时候好像有点问题
+
+
 // pages/manage/manage.js
 let ip = 'http://62.234.134.58:8080/weekday/homework/homework';
 var selectedFlag = []         //undone
@@ -187,5 +190,9 @@ Page({
       //kind=0代表是要添加
       url: '../editwork/editwork?kind=0',
     })
+  },
+  delete: function(e) {
+    var id = e.currentTarget.dataset.id
+
   }
 })
