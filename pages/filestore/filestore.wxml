@@ -1,4 +1,61 @@
 <!--pages/filestore/filestore.wxml-->
 <cu-custom bgColor="bg-gradual-lightorange" isBack="{{false}}">
-	<view slot="content">FILE</view>
+	<view slot="content">文件管理</view>
 </cu-custom>
+<!-- 文件夹列表 --> 
+<view class="cu-list menu-avatar">
+  <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{folders}}" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}" wx:for-item="item">
+    <view class="cu-avatar round lg radious"style="background-image:url(/images/folder.png)" bindtap="skipToFile" data-id='{{item.id}}'>
+    </view>
+    <view class="content" bindtap="skipToFile" data-id='{{item.id}}'>{{item.name}}
+    </view>
+    <view class="move">
+      <view class="bg-grey" data-target="DialogModal2" bindtap='showModal' data-id='{{item.id}}'>重命名</view>
+      <view class="bg-red" data-id="{{item.id}}" bindtap="deleteFolder">删除</view>
+    </view>
+  </view>
+  <!-- 重命名文件夹的对话框 -->
+  <form bindsubmit="changeFolder" report-submit="true">
+     <view class="cu-modal {{modalName=='DialogModal2'?'show':''}}">
+      <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+          <view class="content">重命名文件夹</view>
+          <view class="action" bindtap="hideModal">
+            <text class="cuIcon-close text-red"></text>
+          </view>
+        </view>
+        <input class="input" placeholder="请输入文件夹名字" name="folderName" value="{{folderName}}"/>
+        <view class="cu-bar bg-white justify-end">
+          <view class="action">
+            <button class="cu-btn line-orange text-orange" bindtap="hideModal">取消</button>
+            <button class="cu-btn bg-gradual-lightorange margin-left" bindtap="hideModal" form-type="submit">确定</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </form>
+  <!-- 新建文件夹的对话框 -->
+  <form bindsubmit ="newFolder" report-submit='true'>
+    <view class="cu-modal {{modalName=='DialogModal1'?'show':''}}">
+      <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+          <view class="content">新建文件夹</view>
+          <view class="action" bindtap="hideModal">
+            <text class="cuIcon-close text-red"></text>
+          </view>
+        </view>
+        <input class="input" placeholder="请输入文件夹名字" name="folderName" value="{{folderName}}" />
+        <view class="cu-bar bg-white justify-end">
+          <view class="action">
+            <button class="cu-btn line-orange text-orange" bindtap="hideModal">取消</button>
+            <button class="cu-btn bg-gradual-lightorange margin-left" bindtap="hideModal" form-type="submit">确定</button>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!--悬浮按钮 --> 
+    <button class="cu-btn icon bg-orange xlg post" bindtap='showModal' data-target='DialogModal1'>
+      <text class="cuIcon-add"></text>
+    </button>
+  </form>
+</view>

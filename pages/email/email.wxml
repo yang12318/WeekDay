@@ -1,60 +1,81 @@
 <!--pages/email/email.wxml-->
-<cu-custom bgColor="bg-gradual-lightorange" isBack="{{true}}">
-  <view slot="backText">返回</view>
+<cu-custom bgColor="bg-gradual-lightorange" isBack="{{false}}">
+  <view slot="content">EMAIL</view>
 </cu-custom>
-<scroll-view scroll-x class="bg-white nav">
-  <view class="flex text-center">
-    <view class="cu-item flex-sub {{0==TabCur?'text-orange cur':''}}" bindtap="tabSelect" data-id="0">
-    收件箱
+<view wx:if='{{status1}}'>
+<!-- <view> -->
+  <scroll-view scroll-x class="bg-white nav">
+    <view class="flex text-center">
+      <view class="cu-item flex-sub {{0==TabCur?'text-orange cur':''}}" bindtap="tabSelect" data-id="0">
+      收件箱
+      </view>
+      <view class="cu-item flex-sub {{1==TabCur?'text-orange cur':''}}" bindtap="tabSelect" data-id="1">
+      已发送
+      </view>
     </view>
-    <view class="cu-item flex-sub {{1==TabCur?'text-orange cur':''}}" bindtap="tabSelect" data-id="1">
-    已发送
-    </view>
-  </view>
-</scroll-view>
-<block wx:if="{{TabCur==0}}">
-  <view class="cu-list menu-avatar" wx:for="{{inbox}}" wx:if="{{condition1}}" wx:for-index="index">
-    <view class="cu-item solid-bottom" data-id="{{item.id}}" data-index="{{index}}">
-      <view class="content">
-        <view class="text-grey">
-            <text class="margin-right-s text-l">{{item.title}}</text>
-        </view>
-        <view class="text-gray text-sm flex">
-          <text class="text-cut">
-              <text class="margin-right-s"></text>{{item.sender}}
-          </text>
-        </view>
-         <view class="text-gray text-sm flex">
-          <text class="text-cut">
-              <text class="margin-right-s"></text>{{item.date}}
-          </text>
+  </scroll-view>
+  <block wx:if="{{TabCur==0}}">
+    <view class="cu-list menu-avatar" wx:for="{{inbox}}" wx:if="{{condition1}}" wx:for-index="index" wx:for-item="item">
+      <view class="cu-item solid-bottom" data-index="{{index}}">
+      <image src="/images/em.png" class="cu-avatar round lg"></image>
+        <view class="content" data-id="{{item.id}}" bindtap='detailinfo'>
+          <view class="text-grey">
+              <text class="text-df text-cut">{{item.subject}}</text>
+          </view>
+          <view class="text-gray text-df flex">
+            <text class="text-cut">
+                <text></text>{{item.mailFrom}}
+            </text>
+          </view>
+          <view class="text-gray text-df flex">
+            <text class="text-cut">
+                <text></text>{{item.sentDate}}
+            </text>
+          </view>
         </view>
       </view>
     </view>
-  </view>
-</block>
+  </block>
 
-<block wx:if="{{TabCur==1}}">
-  <view class="cu-list menu-avatar" wx:for="{{finished}}" wx:if="{{condition2}}" wx:for-index="index">
-    <view class="cu-item solid-bottom" data-id="{{item.id}}" data-index="{{index}}">
-      <view class="content">
-        <view class="text-grey">
-            <text class="margin-right-s text-l">{{item.title}}</text>
-        </view>
-        <view class="text-gray text-sm flex">
-          <text class="text-cut">
-              <text class="margin-right-s"></text>{{item.sender}}
-          </text>
-        </view>
-         <view class="text-gray text-sm flex">
-          <text class="text-cut">
-              <text class="margin-right-s"></text>{{item.date}}
-          </text>
+  <block wx:if="{{TabCur==1}}">
+    <view class="cu-list menu-avatar" wx:for="{{sent}}" wx:if="{{condition2}}" wx:for-index="index">
+      <view class="cu-item solid-bottom">
+      <image src="/images/em.png" class="cu-avatar round lg"></image>
+        <view class="content" data-id="{{item.id}}" data-index="{{index}}" bindtap='detailinfo'>
+          <view class="text-grey">
+              <text class="text-df text-cut">{{item.subject}}</text>
+          </view>
+          <view class="text-gray text-df flex">
+            <text class="text-cut">
+                <text></text>{{item.mailto}}
+            </text>
+          </view>
+          <view class="text-gray text-df flex">
+            <text class="text-cut">
+                <text></text>{{item.sentDate}}
+            </text>
+          </view>
         </view>
       </view>
     </view>
-  </view>
-  <button class="cu-btn icon bg-orange xlg post" bindtap='add'>
-    <text class="cuIcon-add"></text>
-  </button>
-</block>
+    <button class="cu-btn icon bg-orange xlg post" bindtap='add'>
+      <text class="cuIcon-add"></text>
+    </button>
+  </block>
+</view>
+
+<view wx:if='{{status2}}'>
+  <form bindsubmit='login' report-submit='true'>
+      <view class="cu-form-group solid-bottom">
+        <view class="title">邮箱</view>
+        <input placeholder="仅限ouc邮箱" name="account" value="{{account}}">17020031025</input>
+      </view>
+      <view class="cu-form-group solid-bottom">
+        <view class="title">密码</view>
+        <input type="password" name="password" value="{{password}}">L1L2Y3123456</input>
+      </view>
+      <view class="cu-bar btn-group bg-white">
+        <button class="cu-btn bg-cyan" form-type='submit'>登录</button>
+      </view>
+  </form>
+</view>

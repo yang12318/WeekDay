@@ -1,1 +1,19 @@
 /* pages/email/email.wxss */
+.post {
+    float: right;
+    position: fixed;
+    bottom: 20px;
+    right: 15px;
+    box-shadow: 2px 1px 1px #cccccc;
+}
+.li {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  font-size: 34rpx;
+  width: 100%;
+  padding: 0 4%;
+  height: 80rpx;
+  line-height: 100rpx;
+  border-bottom: 1rpx solid #f1f1f1;
+}

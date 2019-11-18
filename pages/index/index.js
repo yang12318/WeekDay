@@ -1,10 +1,7 @@
-//添加之后再回来的时候好像有点问题
-
-
-// pages/manage/manage.js
+// pages/index/index.js
 let ip = 'http://62.234.134.58:8080/weekday/homework/homework';
-var selectedFlag = []         //undone
-var selectedFlag2 = []        //done
+var unfinished = []         //undone
+var finished = []           //done
 function refresh(that) {
   let token = wx.getStorageSync('token');
   console.log('这里token是' + token)
@@ -16,19 +13,32 @@ function refresh(that) {
     },
     success: function (res) {
       console.log(res.data)
+      unfinished = []
+      finished = []
+      var count = 0
       for (let i = 0, m = res.data.data.undone.length; i < m; i++) {
-        selectedFlag.push(false)
+        for(let j = 0, k = res.data.data.undone[i].list.length; j < k; j++) {
+          unfinished.push(res.data.data.undone[i].list[j]);
+          var temp = unfinished[count].deadline
+          unfinished[count].deadline = temp.substring(0, 4) + '-' + temp.substring(4, 6) + '-' + temp.substring(6, 8)
+          count = count + 1
+        }
+        
       }
+      count = 0
       for (let i = 0, m = res.data.data.done.length; i < m; i++) {
-        selectedFlag2.push(false)
+        for(let j = 0, k = res.data.data.done[i].list.length; j < k; j++) {
+          finished.push(res.data.data.done[i].list[j]);
+          var temp = finished[count].doneTime
+          finished[count].doneTime = temp.substring(0, 4) + '-' + temp.substring(4, 6) + '-' + temp.substring(6, 8)
+          count = count + 1
+        }
       }
       that.setData({
-        finished: res.data.data.done,
-        unfinished: res.data.data.undone,
-        condition11: (Object.keys(res.data.data.done).length != 0),
-        condition22: (Object.keys(res.data.data.undone).length != 0),
-        selectedFlag: selectedFlag,
-        selectedFlag2: selectedFlag2
+        finished: finished,
+        unfinished: unfinished,
+        condition1: (Object.keys(finished).length != 0),
+        condition2: (Object.keys(unfinished).length != 0),
       })
     },
     fail: function (res) {
@@ -46,9 +56,6 @@ Page({
    */
   data: {
     TabCur: 0,
-    // 展开折叠
-    selectedFlag: [true, true, true, true],
-    selectedFlag2: [true, true, true, true],
     scrollLeft: 0
   },
   // ListTouch触摸开始
@@ -87,29 +94,6 @@ Page({
     })
     var that = this
     refresh(that)
-  },
-  // 展开折叠选择  
-  changeToggle: function (e) {
-    var index = e.currentTarget.dataset.index;
-    if (this.data.selectedFlag[index]) {
-      this.data.selectedFlag[index] = false;
-    } else {
-      this.data.selectedFlag[index] = true;
-    }
-    this.setData({
-      selectedFlag: this.data.selectedFlag
-    })
-  },
-  changeToggle2: function (e) {
-    var index = e.currentTarget.dataset.index;
-    if (this.data.selectedFlag2[index]) {
-      this.data.selectedFlag2[index] = false;
-    } else {
-      this.data.selectedFlag2[index] = true;
-    }
-    this.setData({
-      selectedFlag2: this.data.selectedFlag2
-    })
   },
   /**
    * 生命周期函数--监听页面加载
@@ -169,17 +153,21 @@ Page({
 
   },
   revise: function (e) {
+    var that = this
     var id = e.currentTarget.dataset.id
+    var userId = e.currentTarget.dataset.userId
     var title = e.currentTarget.dataset.title
-    var desp = e.currentTarget.dataset.desp
-    var date = e.currentTarget.dataset.date
+    var content = e.currentTarget.dataset.content
+    var done = e.currentTarget.dataset.done
+    var createTime = e.currentTarget.dataset.createTime
+    var deadline = e.currentTarget.dataset.deadline
+    var doneTime = e.currentTarget.dataset.doneTime
     wx.navigateTo({
       //kind=1代表是要修改
-
-      //这个等晓洋去问
-
-      url: '../editwork/editwork?kind=1&id=' + id + '&title=' + title + '&desp=' + desp + '&date=' + date,
-      success: function (res) { },
+      url: '../editwork/editwork?kind=1&id=' + id + '&userId=' + userId + '&title=' + title + '&content=' + content + '&done=' + done + '&createTime' + createTime + '&deadline=' + deadline + '&doneTime=' + doneTime,
+      success: function (res) {
+        refresh(that)
+      },
       fail: function (res) { },
       complete: function (res) { },
     })
@@ -188,11 +176,98 @@ Page({
     var id = e.currentTarget.dataset.id
     wx.navigateTo({
       //kind=0代表是要添加
-      url: '../editwork/editwork?kind=0',
+      url: '../editwork/editwork?kind=0'
     })
   },
   delete: function(e) {
+    var that = this
     var id = e.currentTarget.dataset.id
+    var token = wx.getStorageSync('token')
+    console.log('待删除的id='+ id)
+    wx.request({
+      url: ip,
+      method: 'DELETE',
+      header: {
+        'token': token,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        'id': parseInt(id)
+      },
+      success: function(res) {
+        var msg = res.data.msg
+        var code = res.data.code
+        console.log(res.data)
+        if(code != 0) {
+          wx.showToast({
+            title: msg,
+            icon: 'none'
+          })
+          return
+        }
+        wx.showToast({
+          title: '删除成功',
+        })
+        refresh(that)
+      },
+      fail: function(res) {
+        wx.showToast({
+          title: '网络连接失败',
+          icon: 'none'
+        })
+      }
+    })
+  },
+  finishHomework: function(e) {
+    var that = this
+    var id = e.currentTarget.dataset.id
+    var userId = e.currentTarget.dataset.userId
+    var title = e.currentTarget.dataset.title
+    var content = e.currentTarget.dataset.content
+    var done = e.currentTarget.dataset.done
+    var createTime = e.currentTarget.dataset.createTime
+    var deadline = e.currentTarget.dataset.deadline
+    var doneTime = new Date().Format('yyyyMMdd')
+    var token = wx.getStorageSync('token')
+    wx.request({
+      url: ip,
+      method: 'PUT',
+      data: {
+        id: id,
+        userId: userId,
+        title: title,
+        content: content,
+        done: 1,
+        createTime: createTime,
+        deadline: deadline,
+        doneTime: doneTime
+      },
+      header: {
+        'Content-Type': 'application/json',
+        'token': token
+      },
+      success: function (res) {
+        var code = res.data.code
+        var message = res.data.msg
+        if (code != 0) {
+          wx.showToast({
+            title: message
+          })
+          return
+        }
+        wx.showToast({
+          title: '作业已完成',
+          iconflag_plan: true
+        })
+        refresh(that)
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: '网络连接失败',
+          icon: 'none'
+        })
+      }
 
+    })
   }
 })

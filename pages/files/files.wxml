@@ -1,0 +1,39 @@
+<!--pages/files/files.wxml-->
+<cu-custom bgColor="bg-gradual-lightorange" isBack="{{false}}">
+	<view slot="content">文件</view>
+</cu-custom>
+<view class="cu-list menu-avatar">
+  <view class="cu-item  {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{files}}" id="{{item.id}}"  wx:key      bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}">
+    <view class="cu-avatar round lg radious"style="background-image:url(/images/file.png)"></view>
+    <view class="content">
+      <view class="">{{item.name}}</view>
+    </view>
+    <view class="move">
+      <view class="bg-red">删除</view>
+    </view>
+  </view>
+  <!-- 上传文件对话框 -->
+  <form bindsubmit="uploadFile" report-submit="true">
+     <view class="cu-modal {{modalName=='DialogModal2'?'show':''}}">
+      <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+          <view class="content">重命名文件夹</view>
+          <view class="action" bindtap="hideModal">
+            <text class="cuIcon-close text-red"></text>
+          </view>
+        </view>
+        <text class="text-grey text-lg">{{filename}}</text>
+        <view class="cu-bar bg-white justify-end">
+          <view class="action">
+            <button class="cu-btn line-orange text-orange" bindtap="hideModal">取消</button>
+            <button class="cu-btn bg-gradual-lightorange margin-left" bindtap="hideModal" form-type="submit">确定</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </form>
+  <!--悬浮按钮 --> 
+    <view bindtap="showModal"class="add" data-target="DialogModal1">
+        <image src="./../../images/add.png"class="addIcon"></image>
+    </view>
+</view>

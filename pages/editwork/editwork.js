@@ -1,6 +1,13 @@
 // pages/add/add.js
 let ip = 'http://62.234.134.58:8080/weekday/homework/homework';
 var id = 0;
+var userId = 0;
+var title = '';
+var content = '';
+var done = 0;
+var createTime = '';
+var deadline = '';
+var doneTime = '';
 var kind = -1;
 Date.prototype.Format = function (fmt) { //author: meizz 
   var o = {
@@ -38,14 +45,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this
     kind = options.kind
     console.log("kind=" + kind)
     if (kind == 1) {
       id = options.id
+      userId = options.userId
+      title = options.title
+      content = options.content
+      done = options.done
+      createTime = options.createTime
+      deadline = options.deadline
+      doneTime = options.doneTime
       that.setData({
-        title: options.title,
-        desp: options.desp,
-        date: options.date
+        title: title,
+        desp: content,
+        date: deadline
       })
     }
   },
@@ -181,6 +196,9 @@ Page({
               icon: 'none',
               iconflag_plan: true
             })
+            wx.navigateBack({
+              
+            })
           }
         },
         fail: function (res) {
@@ -192,37 +210,41 @@ Page({
       })
     } else if (kind == 1) {
       //此处应该为修改
-      console.log("there")
       wx.request({
         url: ip,
         method: 'PUT',
         data: {
           id: id,
-          userId: 'test',
+          userId: userId,
           title: e.detail.value.title,
-          content: e.detail.value.content,
-          done: 0,
-          createTime: '',
+          content: e.detail.value.desp,
+          done: done,
+          createTime: createTime,
           deadline: temp,
-          doneTime: ''
+          doneTime: doneTime
         },
         header: {
           'Content-Type': 'application/json',
           'token': token
         },
         success: function (res) {
+          console.log('修改成功')
+          console.log(res.data)
           var code = res.data.code
           var message = res.data.msg
           if (code != 0) {
             wx.showToast({
               title: message
             })
-          } else {
-            wx.showToast({
-              title: message,
-              iconflag_plan: true
-            })
+            return
           }
+          wx.showToast({
+            title: message,
+            iconflag_plan: true
+          })
+          wx.navigateBack({
+            
+          })
         },
         fail: function (res) {
           wx.showToast({
@@ -231,8 +253,6 @@ Page({
           })
         }
       })
-    } else {
-      console.log("垃圾程序");
     }
   }
 })

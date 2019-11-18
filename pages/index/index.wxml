@@ -13,27 +13,18 @@
   </view>
 </scroll-view>
 <block wx:if="{{TabCur==0}}">
-  <view wx:for="{{unfinished}}" wx:for-index="index" wx:for-term="term"  wx:if="{{condition22}}">
-    <view class="li" data-index="{{index}}" bindtap='changeToggle2'>
-      <view class="left text-grey">{{item.date}}</view>
-      <view class="right">
-          <text class="cuIcon {{selectedFlag2[index]?'cuIcon-unfold':'cuIcon-fold'}}"> </text>
+  <view class="cu-list menu-avatar" wx:if='{{condition2}}'>
+    <view class="cu-item solid-bottom {{modalName=='move-box-'+ index?'move-cur':''}}" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}" wx:for="{{unfinished}}">
+      <image src="/images/icon.png" class="cu-avatar round lg" bindtap='finishHomework' data-id='{{item.id}}' data-userId='{{item.userId}}' data-title='{{item.title}}' data-content='{{item.content}}' data-done='{{item.done}}' data-createTime='{{item.createTime}}' data-deadline='{{item.deadline}}' data-doneTime='{{item.doneTime}}'></image>
+      <view class="content" bindtap='finishHomework' data-id='{{item.id}}' data-userId='{{item.userId}}' data-title='{{item.title}}' data-content='{{item.content}}' data-done='{{item.done}}' data-createTime='{{item.createTime}}' data-deadline='{{item.deadline}}' data-doneTime='{{item.doneTime}}'>
+        <view class="text-grey text-lg">{{item.title}}</view>
+        <view class="text-gray text-df">
+          <text></text> {{item.content}}</view>
+        <view class="text-gray text-df">{{item.deadline}}</view>
       </view>
-    </view>
-    <view hidden="{{!selectedFlag2[index]}}">
-      <view class="cu-list menu-avatar">
-        <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:key bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}" wx:for="{{item.list}}" wx:for-item="subitem">
-          <image src="/images/icon.png" class="cu-avatar round lg"></image>
-          <view class="content">
-            <view class="text-grey">{{subitem.title}}</view>
-            <view class="text-gray text-sm">
-              <text class="text-red"></text> {{subitem.content}}</view>
-          </view>
-          <view class="move">
-            <view class="bg-grey" bindtap='revise'>编辑</view>
-            <view class="bg-red" bindtap='delete'>删除</view>
-          </view>
-        </view>
+      <view class="move">
+        <view class="bg-grey" bindtap='revise' data-id='{{item.id}}' data-userId='{{item.userId}}' data-title='{{item.title}}' data-content='{{item.content}}' data-done='{{item.done}}' data-createTime='{{item.createTime}}' data-deadline='{{item.deadline}}' data-doneTime='{{item.doneTime}}'>编辑</view>
+        <view class="bg-red" bindtap='delete' data-id='{{item.id}}'>删除</view>
       </view>
     </view>
   </view>
@@ -43,31 +34,17 @@
 </block>
 
 <block wx:if="{{TabCur==1}}">
-  <view wx:for="{{finished}}" wx:for-index="index" wx:for-term="term"  wx:if="{{condition11}}">
-    <view class="li" data-index="{{index}}" bindtap='changeToggle'>
-      <view class="left text-grey">{{item.date}}</view>
-      <view class="right">
-          <text class="cuIcon {{selectedFlag[index]?'cuIcon-unfold':'cuIcon-fold'}}"> </text>
+  <view class="cu-list menu-avatar" wx:if='{{condition1}}'>
+    <view class="cu-item solid-bottom {{modalName=='move-box-'+ index?'move-cur':''}}" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}" wx:for="{{finished}}">
+      <image src="/images/icon.png" class="cu-avatar round lg"></image>
+      <view class="content">
+        <view class="text-grey text-lg">{{item.title}}</view>
+        <view class="text-gray text-df">
+          <text class="text-red"></text> {{item.content}}</view>
+        <view class="text-gray text-df">{{item.doneTime}}</view>
       </view>
-    </view>
-    <view hidden="{{!selectedFlag[index]}}">
-      <view class="cu-list menu-avatar">
-        <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:key bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}" wx:for="{{item.list}}" wx:for-item="subitem">
-          <image src="/images/icon.png" class="cu-avatar round lg"></image>
-          <view class="content">
-            <view class="text-grey">
-                <text class="margin-right-s text-l">{{subitem.title}}</text>
-            </view>
-            <view class="text-gray text-sm flex">
-              <text class="text-cut">
-                <text class="margin-right-s"></text>{{subitem.content}}
-              </text>
-            </view>
-          </view>
-          <view class="move">
-            <view class="bg-red" bindtap='delete'>删除</view>
-          </view>
-        </view>
+      <view class="move">
+        <view class="bg-red" bindtap='delete' data-id='{{item.id}}'>删除</view>
       </view>
     </view>
   </view>

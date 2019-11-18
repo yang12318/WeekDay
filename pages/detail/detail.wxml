@@ -2,3 +2,78 @@
 <cu-custom bgColor="bg-gradual-lightorange" isBack="{{true}}">
   <view slot="backText">返回</view>
 </cu-custom>
+<view>
+  <view class="title padding">
+    <text class="text-lg text-bold">收件箱</text>
+  </view>
+  <view class="box">
+    <view class="addresser flex align-start margin-xs padding">
+      <view class="addresser_title">
+        <text class="text-grey text-lg">收件人：</text>
+      </view>
+      <view class="addresser_more">
+        <view class="name">
+          <text class="text-lg">{{mailtoNick}}</text>
+        </view>
+        <view class="email_address margin-{xs}">
+          <text class=" text-lg text-grey">{{mailto}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="recipients flex align-start padding">
+      <view class="recipients_title">
+        <text class="text-grey text-lg">发件人：</text>
+      </view>
+      <view class="recipients_more">
+        <view class="name">
+          <text class="text-lg">{{mailFromNick}}</text>
+        </view>
+        <view class="email_address">
+          <text class=" text-lg text-grey">{{mailFrom}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="theme padding">
+      <view class="theme_title">
+        <text class="text-grey text-lg">主题：</text>
+        <text class="text-grey text-lg ">{{subject}}</text>
+      </view>
+    </view>
+    <view class="time padding">
+      <view class="time_title">
+      <text class="text-grey text-lg">时间：</text>
+      <text class="text-grey text-lg">{{sentTime}}</text>
+      </view>
+    </view>
+  
+    <view class="annex padding ">
+      <view class="annex_num">
+        <text class="text-grey text-lg:">附件:</text>
+        <image src="../../images/annex.png" class="annex_icons"></image>
+        <text class="text-grey text-lg">2个</text>
+      </view>
+    </view>
+  </view>
+  <view class="flex justify-center">
+    <view class="cutline bg-grey"></view>
+  </view>
+  <view class="email_content padding">
+    <rich-text class="text-grey content" nodes='{{text}}'></rich-text>
+  </view>
+  <view class="annex_box" bindtap='downloadF'>
+    <view class="annex_link flex justify-star margin-left-xs">
+      <image class="annex_icon" src="../../images/annex2.png"></image>
+      <view class="annex_title margin-left-xs">
+        <view class="text-title">
+          <text class="text-lg text-title" >{{fileName}}</text>
+        </view>
+        <view class="margin-top-xs">
+          <text class="text-grey">1.2M</text>
+        </view>
+      </view>
+      <!-- <view class="annex_more">
+        <image class="more_icon" src="../../images/more.png"></image>
+      </view> -->
+    </view>
+  </view>
+</view>

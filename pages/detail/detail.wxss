@@ -1,1 +1,36 @@
 /* pages/detail/detail.wxss */
+.cutline{
+  width: 93%;
+  height: 1px;
+}
+.content{
+  word-break: break-all;
+}
+.annex_icons{
+  width: 10pt;
+  height: 10pt;
+}
+.annex_icon{
+  width:30pt;
+  height: 28pt
+}
+
+.more_icon{
+  width: 20pt;
+  height: 20pt;
+}
+.annex_more{
+  float: right;
+}
+.text-title{
+  text-overflow: -o-ellipsis-lastline;/*css3中webkit内核提供的一个方法类似ellipsis*/
+overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;/*自适应盒子*/
+-webkit-line-clamp: 1;/*此处为1行,如果是两行就改成2*/
+-webkit-box-orient: vertical;
+}
+.annex_title{
+  width: 75%;
+  height: 30pt;
+}

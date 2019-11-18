@@ -13,7 +13,7 @@ App({
       success(res) {
         console.log('登录', res.code)
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        /*if (res.code) {
+        if (res.code) {
           //发起网络请求
           console.log('登录', res.code)
           wx.request({
@@ -63,7 +63,7 @@ App({
             title: '登录失败',
             icon: 'none'
           })
-        }*/
+        }
       },
       fail: function (res) {
         wx.showToast({
