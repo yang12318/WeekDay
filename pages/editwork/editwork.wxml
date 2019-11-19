@@ -5,11 +5,11 @@
 <form bindsubmit='savePlan' report-submit='true'>
     <view class="cu-form-group solid-bottom">
       <view class="title">科目</view>
-      <input placeholder="1-5字" name="title" value="{{title}}"></input>
+      <input placeholder="1-10字" name="title" value="{{title}}"></input>
     </view>
     <view class="cu-form-group solid-bottom">
       <view class="title">内容</view>
-      <input placeholder="1-17字" name="desp" value="{{desp}}"></input>
+      <input placeholder="1-19字" name="desp" value="{{desp}}"></input>
     </view>
     <view class="cu-form-group solid-bottom">
       <view class="title">截止日期</view>

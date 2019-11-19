@@ -2,12 +2,9 @@
 <cu-custom bgColor="bg-gradual-lightorange" isBack="{{true}}">
   <view slot="backText">返回</view>
 </cu-custom>
-<view>
-  <view class="title padding">
-    <text class="text-lg text-bold">收件箱</text>
-  </view>
+<view class="bg-white padding-bottom-xl">
   <view class="box">
-    <view class="addresser flex align-start margin-xs padding">
+    <view class="addresser flex align-start padding">
       <view class="addresser_title">
         <text class="text-grey text-lg">收件人：</text>
       </view>
@@ -72,9 +69,6 @@
             <text class="text-grey">{{item.size}}</text>
           </view>
         </view>
-        <!-- <view class="annex_more">
-          <image class="more_icon" src="../../images/more.png"></image>
-        </view> -->
       </view>
     </view>
   </view>

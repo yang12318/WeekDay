@@ -132,16 +132,16 @@ Page({
       })
       return
     }
-    if (e.detail.value.title.length < 1 || e.detail.value.title.length > 5) {
+    if (e.detail.value.title.length < 1 || e.detail.value.title.length > 10) {
       wx.showToast({
-        title: '科目名的长度必须在1-5字之间',
+        title: '科目名的长度必须在1-10字之间',
         icon: 'none'
       })
       return
     }
-    if (e.detail.value.desp.length < 1 || e.detail.value.desp.length > 17) {
+    if (e.detail.value.desp.length < 1 || e.detail.value.desp.length > 19) {
       wx.showToast({
-        title: '具体内容的长度必须在1-17字之间',
+        title: '具体内容的长度必须在1-19字之间',
         icon: 'none'
       })
       return

@@ -1,6 +1,6 @@
 <!--pages/filestore/filestore.wxml-->
 <cu-custom bgColor="bg-gradual-lightorange" isBack="{{false}}">
-	<view slot="content">文件管理</view>
+	<view slot="content">FILE</view>
 </cu-custom>
 <!-- 文件夹列表 --> 
 <view class="cu-list menu-avatar">

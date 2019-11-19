@@ -180,41 +180,53 @@ Page({
     })
   },
   delete: function(e) {
-    var that = this
-    var id = e.currentTarget.dataset.id
-    var token = wx.getStorageSync('token')
-    console.log('待删除的id='+ id)
-    wx.request({
-      url: ip,
-      method: 'DELETE',
-      header: {
-        'token': token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      data: {
-        'id': parseInt(id)
-      },
-      success: function(res) {
-        var msg = res.data.msg
-        var code = res.data.code
-        console.log(res.data)
-        if(code != 0) {
-          wx.showToast({
-            title: msg,
-            icon: 'none'
+    wx.showModal({
+      title: '提示',
+      content: '确定要删除吗？',
+      success:(sm)=>{
+        //确定要删除
+        if(sm.confirm){
+          var that = this
+          var id = e.currentTarget.dataset.id
+          var token = wx.getStorageSync('token')
+          console.log('待删除的id=' + id)
+          wx.request({
+            url: ip,
+            method: 'DELETE',
+            header: {
+              'token': token,
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: {
+              'id': parseInt(id)
+            },
+            success: function (res) {
+              var msg = res.data.msg
+              var code = res.data.code
+              console.log(res.data)
+              if (code != 0) {
+                wx.showToast({
+                  title: msg,
+                  icon: 'none'
+                })
+                return
+              }
+              wx.showToast({
+                title: '删除成功',
+              })
+              refresh(that)
+            },
+            fail: function (res) {
+              wx.showToast({
+                title: '网络连接失败',
+                icon: 'none'
+              })
+            }
           })
-          return
         }
-        wx.showToast({
-          title: '删除成功',
-        })
-        refresh(that)
-      },
-      fail: function(res) {
-        wx.showToast({
-          title: '网络连接失败',
-          icon: 'none'
-        })
+        else if(sm.cancel){
+          //用户点击取消
+        }
       }
     })
   },

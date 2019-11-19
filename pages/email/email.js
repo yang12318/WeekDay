@@ -142,8 +142,8 @@ Page({
   data: {
     TabCur: 0,
     scrollLeft: 0,
-    account: '17020031025@stu.ouc.edu.cn',
-    password: 'L1L2Y3123456',
+    account: '',
+    password: '',
     status1 : false,         //收件箱界面
     status2 : false         //登录界面
   },

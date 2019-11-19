@@ -56,20 +56,20 @@ Page({
         //当没有mailto或mailFrom的时候特殊处理一下
         let arr1 = []
         let arr2 = []
-        if(mailto == '') {
+        if(mailto != '') {
           arr1 = mailto.split(">")[0].split("<")
           console.log(arr1)
-          if (arr1[0] == '') {
+          if (arr1[0] != '') {
             arr1[0] = arr1[1].split("@")[0]
           }
         } else {
           arr1.push('')
           arr1.push('')
         }
-        if(mailFrom == '') {
+        if(mailFrom != '') {
           arr2 = mailFrom.split(">")[0].split("<")
           console.log(arr2)
-          if (arr2[0] == '') {
+          if (arr2[0] != '') {
             arr2[0] = arr2[1].split("@")[0]
           }
         } else {
