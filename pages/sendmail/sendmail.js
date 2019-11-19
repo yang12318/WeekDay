@@ -1,6 +1,6 @@
 // pages/sendemail/sendmail.js
 var emailId = -1
-let ip = 'http://62.234.134.58:8080/weekday/mail/send'
+let ip = 'https://wkdday.com:8080/weekday/mail/send'
 Page({
 
   /**

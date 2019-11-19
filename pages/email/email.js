@@ -1,7 +1,7 @@
 // pages/email/email.js
 var emailId = -1
-var ip = 'http://62.234.134.58:8080/weekday/mail/mailPre'
-let loginip = 'http://62.234.134.58:8080/weekday/mail/mailbox'
+var ip = 'https://wkdday.com:8080/weekday/mail/mailPre'
+let loginip = 'https://wkdday.com:8080/weekday/mail/mailbox'
 //condition1是收件箱 condition2是已发送
 function refreshInbox(that) {
   let token = wx.getStorageSync('token')
@@ -36,8 +36,20 @@ function refreshInbox(that) {
           })
           return
         }
+        var inboxTemp = []
+        for(let i = 0, m = res.data.data.length; i < m; i++) {
+          inboxTemp.push(res.data.data[i])
+          var t = inboxTemp[i].mailFrom
+          //如果mailFrom本身已经是空的了，不能再调用split方法，否则程序就崩溃了
+          //另注：不确定是不是真的存在mailFrom是空的邮件
+          //另另注：但是确定存在mailto是空的邮件
+          if(t != '') {
+            t = t.split(">")[0].split("<")[1]
+            inboxTemp[i].mailFrom = t
+          }
+        }
         that.setData({
-          inbox: res.data.data,
+          inbox: inboxTemp,
           condition1: (Object.keys(res.data.data).length != 0)
         })
 
@@ -89,8 +101,20 @@ function refreshSent(that) {
           })
           return
         }
+        var sentTemp = []
+        for (let i = 0, m = res.data.data.length; i < m; i++) {
+          sentTemp.push(res.data.data[i])
+          var t = sentTemp[i].mailto
+          //如果mailto本身已经是空的了，不能再调用split方法，否则程序就崩溃了
+          //另注：不确定是不是真的存在mailFrom是空的邮件
+          //另另注：但是确定存在mailto是空的邮件
+          if (t != '') {
+            t = t.split(">")[0].split("<")[1]
+            sentTemp[i].mailto = t
+          }
+        }
         that.setData({
-          sent: res.data.data,
+          sent: sentTemp,
           condition2: (Object.keys(res.data.data).length != 0)
         })
 
@@ -118,8 +142,8 @@ Page({
   data: {
     TabCur: 0,
     scrollLeft: 0,
-    account: '',
-    password: '',
+    account: '17020031025@stu.ouc.edu.cn',
+    password: 'L1L2Y3123456',
     status1 : false,         //收件箱界面
     status2 : false         //登录界面
   },

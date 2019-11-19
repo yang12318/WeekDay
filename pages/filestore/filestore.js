@@ -1,5 +1,5 @@
 // pages/filestore/filestore.js
-let ip = "http://62.234.134.58:8080/weekday";
+let ip = "https://wkdday.com:8080/weekday";
 let folderId;
 var fId;              //用来在对话框和函数之间传参
 var that
@@ -190,7 +190,7 @@ Page({
               }
               if(status == 0){
                 wx.showToast({
-                  title: msg,
+                  title: '删除成功',
                 })
                 refresh(that)
               }

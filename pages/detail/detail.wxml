@@ -46,11 +46,11 @@
       </view>
     </view>
   
-    <view class="annex padding ">
+    <view class="annex padding " wx:if='{{hasFile}}'>
       <view class="annex_num">
         <text class="text-grey text-lg:">附件:</text>
         <image src="../../images/annex.png" class="annex_icons"></image>
-        <text class="text-grey text-lg">2个</text>
+        <text class="text-grey text-lg">{{fileNums}}</text>
       </view>
     </view>
   </view>
@@ -60,20 +60,22 @@
   <view class="email_content padding">
     <rich-text class="text-grey content" nodes='{{text}}'></rich-text>
   </view>
-  <view class="annex_box" bindtap='downloadF'>
-    <view class="annex_link flex justify-star margin-left-xs">
-      <image class="annex_icon" src="../../images/annex2.png"></image>
-      <view class="annex_title margin-left-xs">
-        <view class="text-title">
-          <text class="text-lg text-title" >{{fileName}}</text>
+  <view wx:if='{{hasFile}}' wx:for='{{fileInfo}}'>
+    <view class="annex_box" bindtap='downloadF' data-name='{{item.name}}' data-id='{{item.id}}'>
+      <view class="annex_link flex justify-star margin-left-xs">
+        <image class="annex_icon" src="../../images/annex2.png"></image>
+        <view class="annex_title margin-left-xs">
+          <view class="text-title">
+            <text class="text-lg text-title" >{{item.name}}</text>
+          </view>
+          <view class="margin-top-xs">
+            <text class="text-grey">{{item.size}}</text>
+          </view>
         </view>
-        <view class="margin-top-xs">
-          <text class="text-grey">1.2M</text>
-        </view>
+        <!-- <view class="annex_more">
+          <image class="more_icon" src="../../images/more.png"></image>
+        </view> -->
       </view>
-      <!-- <view class="annex_more">
-        <image class="more_icon" src="../../images/more.png"></image>
-      </view> -->
     </view>
   </view>
 </view>

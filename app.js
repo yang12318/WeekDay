@@ -17,7 +17,7 @@ App({
           //发起网络请求
           console.log('登录', res.code)
           wx.request({
-            url: 'http://62.234.134.58:8080/weekday/WeChatLogin/doPost',
+            url: 'https://wkdday.com:8080/weekday/WeChatLogin/doPost',
             data: {
               code: res.code
             },

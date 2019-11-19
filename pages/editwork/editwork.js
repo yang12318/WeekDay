@@ -1,5 +1,5 @@
 // pages/add/add.js
-let ip = 'http://62.234.134.58:8080/weekday/homework/homework';
+let ip = 'https://wkdday.com:8080/weekday/homework/homework';
 var id = 0;
 var userId = 0;
 var title = '';

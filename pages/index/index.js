@@ -1,5 +1,5 @@
 // pages/index/index.js
-let ip = 'http://62.234.134.58:8080/weekday/homework/homework';
+let ip = 'https://wkdday.com:8080/weekday/homework/homework';
 var unfinished = []         //undone
 var finished = []           //done
 function refresh(that) {

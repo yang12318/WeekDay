@@ -1,9 +1,10 @@
 // pages/detail/detail.js
 var mailId = -1;
 var fileId = 0;
-let ip = 'http://62.234.134.58:8080/weekday/mail/mail'
-var attachip = 'http://62.234.134.58:8080/weekday/mail/attachment'
-let downloadip = 'http://62.234.134.58:8080/weekday/mail/attach'
+let ip = 'https://wkdday.com:8080/weekday/mail/mail'
+var attachip = 'https://wkdday.com:8080/weekday/mail/attachment'
+let downloadip = 'https://wkdday.com:8080/weekday/mail/attach'
+let attachDetailip = 'https://wkdday.com:8080/weekday/mail/attachment'
 Page({
 
   /**
@@ -46,35 +47,80 @@ Page({
         var subject = res.data.data.subject
         var sentTime = res.data.data.sentDate
         var text = res.data.data.text
-        var arr1 = mailto.split(">")[0].split("<")
         fileId = res.data.data.fileId
-        console.log(arr1)
-        var arr2 = mailFrom.split(">")[0].split("<")
-        console.log(arr2)
         //arr1和arr2都是如下情况：
         //如果有Nickname，数组中第一个元素就是Nickname，否则第一个元素为空
         //无论如何，数组中第二个元素一定是邮箱（尖括号已去除）
         //因此，这样操作之后都可以按照数组元素直接赋值，不必再做其他考虑
-
         //如果没有Nickname，按照@之前的内容赋值
-        if(arr1[0] == '') {
-          arr1[0] = arr1[1].split("@")[0]
+        //当没有mailto或mailFrom的时候特殊处理一下
+        let arr1 = []
+        let arr2 = []
+        if(mailto == '') {
+          arr1 = mailto.split(">")[0].split("<")
+          console.log(arr1)
+          if (arr1[0] == '') {
+            arr1[0] = arr1[1].split("@")[0]
+          }
+        } else {
+          arr1.push('')
+          arr1.push('')
         }
-        if(arr2[0] == '') {
-          arr2[0] = arr2[1].split("@")[0]
+        if(mailFrom == '') {
+          arr2 = mailFrom.split(">")[0].split("<")
+          console.log(arr2)
+          if (arr2[0] == '') {
+            arr2[0] = arr2[1].split("@")[0]
+          }
+        } else {
+          arr2.push('')
+          arr2.push('')
         }
+        
         if(fileId == 0 || fileId == '') {
           that.setData({
             hasFile: false
           })
         } else {
-          that.setData({
-            hasFile: true
-          })
           var arr3 = fileId.split(",")
           var fileNums = arr3.length
-
-
+          console.log('附件数量为' + fileNums)
+          let fileInfo = []
+          for(let i = 0; i < fileNums; i++) {
+            wx.request({
+              url: attachDetailip + '?id=' + arr3[i],
+              header: {
+                'token': token,
+                'Content-Type': 'charset=UTF-8'
+              },
+              success: function(res) {
+                console.log('附件' + i + '信息：')
+                console.log(res.data)
+                let code = res.data.code
+                let msg = res.data.msg
+                if(code != 0) {
+                  wx.showToast({
+                    title: '获取附件失败',
+                    icon: 'none'
+                  })
+                  return
+                }
+                fileInfo.push(res.data.data)
+                that.setData({
+                  hasFile: true,
+                  fileNums: fileNums + '个',
+                  fileInfo: fileInfo
+                })
+              }, 
+              fail: function(res) {
+                wx.showToast({
+                  title: '网络连接失败',
+                  icon: 'none'
+                })
+              }
+            })  
+          }
+          
         }
         that.setData({
           subject: subject,
@@ -84,7 +130,7 @@ Page({
           mailFromNick: arr2[0],
           text: text,
           sentTime: sentTime,
-          
+
         })
 
       },
@@ -146,32 +192,48 @@ Page({
 
   },
   downloadF: function (e) {
-    console.log('fileId='+fileId)
-    var token = wx.getStorageSync('token')
+    console.log('fileId=' + fileId)
+    let token = wx.getStorageSync('token')
     const downloadTask = wx.downloadFile({
       url: downloadip + '?id=' + fileId,
       header: {
         'token': token
       },
       success: function (res) {
-        res.tempFilePath
-        wx.saveFile({
-          tempFilePath: res.tempFilePath,
-          success: function (res) {
-            wx.showToast({
-              title: '下载成功，文件已保存到' + res.savedFilePath,
-              icon: 'none',
-              duration: 3000
-            })
-          },
-          fail: function (res) {
-            wx.showToast({
-              title: '下载失败',
-              icon: 'none'
-            })
-            return
-          }
-        })
+        console.log(res)
+        console.log(res.tempFilePath)
+        if (res.statusCode == 200) {
+          //用200做一次判断
+          // console.log(wx.env.USER_DATA_PATH + "/" + e.currentTarget.dataset.name)
+          wx.getFileSystemManager().saveFile({
+            tempFilePath: res.tempFilePath,
+            filePath: wx.env.USER_DATA_PATH + "/" + e.currentTarget.dataset.name,
+            // filePath: wx.env.USER_DATA_PATH + "/" + "test.md",
+            success: function (res) {
+              // 打开文档
+              wx.showToast({
+                title: '文件已保存到：' + res.savedFilePath,
+                icon: 'none',
+                duration: 5000
+              })
+              wx.openDocument({
+                filePath: res.savedFilePath,
+                success: function (res) {
+                  console.log('打开文档成功')
+                },
+                fail: function () {
+                  console.log('打开失败');
+                }
+              })
+            }
+          })
+        }
+        else {
+          wx.showToast({
+            title: '下载失败',
+            icon: 'none'
+          })
+        }
       },
       fail: function (res) {
         wx.showToast({
@@ -180,11 +242,6 @@ Page({
         })
         return
       }
-    })
-
-    //显示下载进度
-    downloadTask.onProgressUpdate((res) => {
-      console.log(res.progress)
     })
   }
 })

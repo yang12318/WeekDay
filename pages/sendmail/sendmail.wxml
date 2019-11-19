@@ -1,4 +1,7 @@
 <!--pages/sendemail/sendmail.wxml-->
+<cu-custom bgColor="bg-gradual-lightorange" isBack="{{true}}">
+  <view slot="backText">返回</view>
+</cu-custom>
 <form bindsubmit='sendmail' report-submit='true'>
   <view class="input flex align-center">
     <view class="input_title padding">
