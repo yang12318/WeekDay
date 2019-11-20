@@ -12,11 +12,12 @@ function refresh(that) {
       'token': token
     },
     success: function (res) {
+      console.log(res)
       console.log(res.data)
       unfinished = []
       finished = []
       var count = 0
-      for (let i = 0, m = res.data.data.undone.length; i < m; i++) {
+      for (let i = res.data.data.undone.length - 1; i >= 0; i--) {
         for(let j = 0, k = res.data.data.undone[i].list.length; j < k; j++) {
           unfinished.push(res.data.data.undone[i].list[j]);
           var temp = unfinished[count].deadline
@@ -26,7 +27,7 @@ function refresh(that) {
         
       }
       count = 0
-      for (let i = 0, m = res.data.data.done.length; i < m; i++) {
+      for (let i = res.data.data.done.length - 1; i >= 0; i--) {
         for(let j = 0, k = res.data.data.done[i].list.length; j < k; j++) {
           finished.push(res.data.data.done[i].list[j]);
           var temp = finished[count].doneTime

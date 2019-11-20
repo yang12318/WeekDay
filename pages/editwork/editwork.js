@@ -113,6 +113,11 @@ Page({
   onShareAppMessage: function () {
 
   },
+  tabDelete: function(e) {
+    wx.navigateBack({
+      
+    })
+  },
   savePlan: function (e) {
     var that = this
     console.log(e.detail.value.title)

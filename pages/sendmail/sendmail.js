@@ -81,7 +81,7 @@ Page({
       })
       return
     }
-    if(e.detail.value.text = '') {
+    if(e.detail.value.text == '') {
       wx.showToast({
         title: '请填写邮件内容',
         icon: 'none'
@@ -110,7 +110,7 @@ Page({
         'mailboxId': emailId,
         'mailto': e.detail.value.mailto,
         'subject': e.detail.value.subject,
-        'text': e.detail.value.text,
+        'text': text,
         'cc': '',
         'bcc': '',
         'filesPath' : ''

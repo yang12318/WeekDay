@@ -1,6 +1,5 @@
 // pages/detail/detail.js
 var mailId = -1;
-var fileId = 0;
 let ip = 'https://wkdday.com:8080/weekday/mail/mail'
 var attachip = 'https://wkdday.com:8080/weekday/mail/attachment'
 let downloadip = 'https://wkdday.com:8080/weekday/mail/attach'
@@ -46,8 +45,10 @@ Page({
         var mailFrom = res.data.data.mailFrom
         var subject = res.data.data.subject
         var sentTime = res.data.data.sentDate
-        var text = res.data.data.text
-        fileId = res.data.data.fileId
+        //特殊处理一些标签
+        var text = res.data.data.text.replace("<body>", "").replace("</body>", "").replace("<html>", "").replace("</html>", "").replace(/<img/gi, '<img style="max-width:100%;height:auto;float:left;display:block" ').replace(/<section/g, '<div').replace(/\/section>/g, '\div>');
+        console.log(text)
+        let fileId = res.data.data.fileId
         //arr1和arr2都是如下情况：
         //如果有Nickname，数组中第一个元素就是Nickname，否则第一个元素为空
         //无论如何，数组中第二个元素一定是邮箱（尖括号已去除）
@@ -77,7 +78,7 @@ Page({
           arr2.push('')
         }
         
-        if(fileId == 0 || fileId == '') {
+        if(fileId == 0 || fileId == '' || fileId == null) {
           that.setData({
             hasFile: false
           })
@@ -106,6 +107,7 @@ Page({
                   return
                 }
                 fileInfo.push(res.data.data)
+                console.log(fileInfo)
                 that.setData({
                   hasFile: true,
                   fileNums: fileNums + '个',
@@ -125,9 +127,9 @@ Page({
         that.setData({
           subject: subject,
           mailto: arr1[1],
-          mailtoNick: arr1[0],
+          //mailtoNick: arr1[0],
           mailFrom: arr2[1],
-          mailFromNick: arr2[0],
+          //mailFromNick: arr2[0],
           text: text,
           sentTime: sentTime,
 
@@ -192,6 +194,7 @@ Page({
 
   },
   downloadF: function (e) {
+    let fileId = e.currentTarget.dataset.id
     console.log('fileId=' + fileId)
     let token = wx.getStorageSync('token')
     const downloadTask = wx.downloadFile({
