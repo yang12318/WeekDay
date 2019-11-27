@@ -4,7 +4,7 @@
 </cu-custom>
 <view class="cu-list menu-avatar">
   <view class="cu-item  {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{files}}" id="{{item.id}}" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}">
-    <view class="cu-avatar lg radious"style="background-image:url(/images/file.png)" data-id='{{item.id}}' data-name='{{item.name}}' bindtap='download'></view>
+    <image src="/images/file.png" class="cu-avatar lg radious" data-id='{{item.id}}' data-name='{{item.name}}' bindtap='download'></image>
     <view class="content" data-id='{{item.id}}' data-name='{{item.name}}' bindtap='download'>
       <view class="content_name">{{item.name}}</view>
       <view>

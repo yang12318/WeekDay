@@ -116,6 +116,13 @@ Page({
         'filesPath' : ''
       },
       success: function(res) {
+        if (res.statusCode != 200) {
+          wx.showToast({
+            title: '网络连接失败',
+            icon: 'none'
+          })
+          return
+        }
         console.log(res.data)
         var code = res.data.code
         var msg = res.data.msg
@@ -128,10 +135,13 @@ Page({
         }
         wx.showToast({
           title: '邮件发送成功',
+          duration: 1000, //弹出提示框时长
         })
-        wx.navigateBack({
-          
-        })
+        setTimeout(function(){
+          wx.navigateBack({
+
+          })
+        },1000)
       },
       fail: function(res) {
         wx.showToast({

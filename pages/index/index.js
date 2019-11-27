@@ -1,7 +1,17 @@
 // pages/index/index.js
 let ip = 'https://wkdday.com:8080/weekday/homework/homework';
+let flagFirst = true;
 var unfinished = []         //undone
 var finished = []           //done
+function sleep(numberMillis) {
+  var now = new Date();
+  var exitTime = now.getTime() + numberMillis;
+  while (true) {
+    now = new Date();
+    if (now.getTime() > exitTime)
+      return;
+  }
+}
 function refresh(that) {
   let token = wx.getStorageSync('token');
   console.log('这里token是' + token)
@@ -12,26 +22,34 @@ function refresh(that) {
       'token': token
     },
     success: function (res) {
-      console.log(res)
       console.log(res.data)
+      if (res.statusCode != 200) {
+        wx.showToast({
+          title: '网络连接失败',
+          icon: 'none'
+        })
+        return
+      }
       unfinished = []
       finished = []
       var count = 0
       for (let i = res.data.data.undone.length - 1; i >= 0; i--) {
+        if(res.data.data.undone[i].list == null) {
+          continue
+        }
         for(let j = 0, k = res.data.data.undone[i].list.length; j < k; j++) {
           unfinished.push(res.data.data.undone[i].list[j]);
-          var temp = unfinished[count].deadline
-          unfinished[count].deadline = temp.substring(0, 4) + '-' + temp.substring(4, 6) + '-' + temp.substring(6, 8)
           count = count + 1
         }
         
       }
       count = 0
       for (let i = res.data.data.done.length - 1; i >= 0; i--) {
+        if(res.data.data.done[i].list == null) {
+          continue
+        }
         for(let j = 0, k = res.data.data.done[i].list.length; j < k; j++) {
           finished.push(res.data.data.done[i].list[j]);
-          var temp = finished[count].doneTime
-          finished[count].doneTime = temp.substring(0, 4) + '-' + temp.substring(4, 6) + '-' + temp.substring(6, 8)
           count = count + 1
         }
       }
@@ -100,9 +118,86 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var that = this;
+    new Promise((resolve,reject) => {
+      wx.showLoading({
+        title: '数据在路上~',
+        mask: true
+      })
+      // 登录
+      wx.login({
+       
+        success(res) {
+          console.log('登录', res.code)
+          // 发送 res.code 到后台换取 openId, sessionKey, unionId
+          if (res.code) {
+            //发起网络请求
+            console.log('登录', res.code)
+            wx.request({
+              url: 'https://wkdday.com:8080/weekday/WeChatLogin/doPost',
+              data: {
+                code: res.code
+              },
+              header: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+              },
+              method: 'POST',
+              success: function (res) {
+                wx.hideLoading();
+                var code = res.data.code
+                var msg = res.data.msg
+                if (code == -2) {
+                  wx.showToast({
+                    title: 'code格式错误',
+                    icon: 'none'
+                  })
+                  return
+                }
+                if (code == -10) {
+                  wx.showToast({
+                    title: '登录失败',
+                    icon: 'none'
+                  })
+                  return
+                }
+                var token = res.data.token
+                console.log(token)
+                wx.setStorageSync('token', token)
+                
+                wx.showToast({
+                  title: '登录成功',
+                })
+                resolve();
+              },
+              fail: function (res) {
+                wx.showToast({
+                  title: '登录失败',
+                  icon: 'none'
+                })
+              }
+            })
+          } else {
+            console.log('登录失败！' + res.errMsg)
+            wx.showToast({
+              title: '登录失败',
+              icon: 'none'
+            })
+          }
+        },
+        fail: function (res) {
+          wx.showToast({
+            title: '登录失败',
+            icon: 'none'
+          })
+        }
+      })
+ 
+    }).then(() => {
+      flagFirst = false;
+      refresh(that);
+    })
+    
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -114,8 +209,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var that = this
-    refresh(that)
+    let that = this
+    if(flagFirst == false) {
+      refresh(that)
+    }
   },
 
   /**
@@ -136,10 +233,13 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+    if(flagFirst == true) {
+      return
+    }
     var that = this
     refresh(that)
   },
-
+ 
   /**
    * 页面上拉触底事件的处理函数
    */
@@ -202,12 +302,19 @@ Page({
               'id': parseInt(id)
             },
             success: function (res) {
+              if (res.statusCode != 200) {
+                wx.showToast({
+                  title: '网络连接失败',
+                  icon: 'none'
+                })
+                return
+              }
               var msg = res.data.msg
               var code = res.data.code
               console.log(res.data)
               if (code != 0) {
                 wx.showToast({
-                  title: msg,
+                  title: '删除失败',
                   icon: 'none'
                 })
                 return
@@ -240,7 +347,7 @@ Page({
     var done = e.currentTarget.dataset.done
     var createTime = e.currentTarget.dataset.createTime
     var deadline = e.currentTarget.dataset.deadline
-    var doneTime = new Date().Format('yyyyMMdd')
+    var doneTime = new Date().Format('yyyy-MM-dd')
     var token = wx.getStorageSync('token')
     wx.request({
       url: ip,
@@ -260,11 +367,18 @@ Page({
         'token': token
       },
       success: function (res) {
+        if (res.statusCode != 200) {
+          wx.showToast({
+            title: '网络连接失败',
+            icon: 'none'
+          })
+          return
+        }
         var code = res.data.code
         var message = res.data.msg
         if (code != 0) {
           wx.showToast({
-            title: message
+            title: '作业完成失败'
           })
           return
         }

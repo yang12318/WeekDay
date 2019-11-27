@@ -9,9 +9,6 @@
         <text class="text-grey text-lg">收件人：</text>
       </view>
       <view class="addresser_more">
-        <!-- <view class="name">
-          <text class="text-lg">{{mailtoNick}}</text>
-        </view> -->
         <view class="email_address margin-{xs}">
           <text class=" text-lg text-grey">{{mailto}}</text>
         </view>
@@ -22,9 +19,6 @@
         <text class="text-grey text-lg">发件人：</text>
       </view>
       <view class="recipients_more">
-        <!-- <view class="name">
-          <text class="text-lg">{{mailFromNick}}</text>
-        </view> -->
         <view class="email_address">
           <text class=" text-lg text-grey">{{mailFrom}}</text>
         </view>

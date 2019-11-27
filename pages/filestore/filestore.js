@@ -11,13 +11,20 @@ function refresh(e) {
       'token': token
     },
     success: function (res) {
+      if (res.statusCode != 200) {
+        wx.showToast({
+          title: '网络连接失败',
+          icon: 'none'
+        })
+        return
+      }
       //展示文件夹数据
       console.log(res.data)
       let code = res.data.code
       let msg = res.data.msg
       if(code != 0) {
         wx.showToast({
-          title: msg,
+          title: '获取数据失败',
           icon: 'none'
         })
         return
@@ -52,7 +59,8 @@ Page({
   },
   hideModal(e){
     this.setData({
-      modalName:null
+      modalName:null,
+      folderName:null
     })
   },
   //获取文件id
@@ -77,10 +85,17 @@ Page({
       },
       header:{
         'content-type': 'application/x-www-form-urlencoded',
-         'token': token
+        'token': token
       },
       method: 'POST',
       success:(res)=>{
+        if (res.statusCode != 200) {
+          wx.showToast({
+            title: '网络连接失败',
+            icon: 'none'
+          })
+          return
+        }
         let status = res.data.code;
         if(status == -3){
           wx.showToast({
@@ -96,6 +111,12 @@ Page({
           })
           return
         }
+        if(status == -6){
+          wx.showToast({
+            title: '文件夹已经存在',
+            icon:'none'
+          })
+        }
         if(status == 0){
           wx.showToast({
             title: '创建成功',
@@ -106,12 +127,10 @@ Page({
       }
     })
     //清空文件夹内容
-    console.log("test");
     console.log(that);
     that.setData({
       folderName:""
     })
-    console.log("test2");
     
   },
   //重命名文件夹
@@ -138,6 +157,13 @@ Page({
       },
       method: 'PUT',
       success: (res) => {
+        if (res.statusCode != 200) {
+          wx.showToast({
+            title: '网络连接失败',
+            icon: 'none'
+          })
+          return
+        }
         let status = res.data.code;
         if (status == -3) {
           wx.showToast({
@@ -160,6 +186,9 @@ Page({
         }
       }
     })
+    that.setData({
+      folderName: ""
+    })
   },
   //删除文件夹
   deleteFolder: (e)=>{
@@ -178,6 +207,13 @@ Page({
             },
             method: 'DELETE',
             success:(res)=>{
+              if (res.statusCode != 200) {
+                wx.showToast({
+                  title: '网络连接失败',
+                  icon: 'none'
+                })
+                return
+              }
               console.log("删除成功",res.data)
               let status = res.data.code;
               let msg = res.data.msg;

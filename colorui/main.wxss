@@ -2423,7 +2423,7 @@ button.icon.xlg {
 
 .cu-form-group textarea {
 	margin: 32rpx 0 30rpx;
-	height: 4.6em;
+	height: 18em;
 	width: 100%;
 	line-height: 1.2em;
 	flex: 1;

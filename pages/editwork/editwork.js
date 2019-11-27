@@ -158,10 +158,7 @@ Page({
       })
       return
     }
-    //console.log(new Date().Format('yyyyMMdd'));
     var temp = e.detail.value.date
-    temp = temp.substr(0, 4) + temp.substr(5, 2) + temp.substr(8, 2)
-    //console.log(temp)
     let token = wx.getStorageSync('token')
     console.log(kind)
     if (kind == 0) {
@@ -173,7 +170,7 @@ Page({
           title: e.detail.value.title,
           content: e.detail.value.desp,
           done: 0,
-          createTime: new Date().Format('yyyyMMdd'),
+          createTime: new Date().Format('yyyy-MM-dd'),
           deadline: temp,
           doneTime: '',
         },
@@ -183,12 +180,20 @@ Page({
         },
         method: 'POST',
         success: function (res) {
+          if (res.statusCode != 200) {
+            wx.showToast({
+              title: '网络连接失败',
+              icon: 'none'
+            })
+            return
+          }
           console.log(res.data)
           var code = res.data.code
           var message = res.data.msg
           if (code == -3) {
             wx.showToast({
-              title: message,
+              title: '添加作业失败',
+              icon: 'none'
             })
             that.setData({
               title: "",
@@ -233,13 +238,19 @@ Page({
           'token': token
         },
         success: function (res) {
-          console.log('修改成功')
+          if (res.statusCode != 200) {
+            wx.showToast({
+              title: '网络连接失败',
+              icon: 'none'
+            })
+            return
+          }
           console.log(res.data)
           var code = res.data.code
           var message = res.data.msg
           if (code != 0) {
             wx.showToast({
-              title: message
+              title: '修改失败'
             })
             return
           }

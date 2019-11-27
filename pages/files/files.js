@@ -14,13 +14,20 @@ function refresh(that) {
       'token': token
     },
     success: function (res) {
+      if (res.statusCode != 200) {
+        wx.showToast({
+          title: '网络连接失败',
+          icon: 'none'
+        })
+        return
+      }
       //展示文件夹数据
       console.log(res.data)
       let code = res.data.code
       let msg = res.data.msg
       if (code != 0) {
         wx.showToast({
-          title: msg,
+          title: '获取数据失败',
           icon: 'none'
         })
         return
@@ -57,7 +64,8 @@ Page({
   },
   hideModal(e) {
     this.setData({
-      modalName: null
+      modalName: null,
+      filename:''
     })
   },
   //删除文件
@@ -78,13 +86,20 @@ Page({
             },
             method: 'DELETE',
             success: (res) => {
+              if (res.statusCode != 200) {
+                wx.showToast({
+                  title: '网络连接失败',
+                  icon: 'none'
+                })
+                return
+              }
               console.log("删除成功", res.data)
               var that = this;
               let status = res.data.code;
               let msg = res.data.msg;
               if (status == -3) {
                 wx.showToast({
-                  title: msg,
+                  title: 'msg',
                   icon: 'none'
                   
                 })
@@ -103,6 +118,9 @@ Page({
                 })
               }
               else if(status==0){
+                wx.showToast({
+                  title: '删除成功',
+                })
                 refresh(that);
               }
             }
@@ -151,57 +169,101 @@ Page({
     let token = wx.getStorageSync('token');
     let folderId = that.data.folderId;
     let filename = that.data.filename;
-    wx.uploadFile({
-      url: 'https://wkdday.com:8080/weekday/file/upload?folderId='+folderId+'&fileName='+filename,
-      filePath: that.data.path,
-      name:'file',
-      header:{
-        'Content-Type': 'multipart/form-data',
-        'chartset': 'utf-8',
-        'token':token
-      },
-      formData:{
-        filename: that.data.filename,
-        folderId:that.data.folderId
-      },
-      method: 'POST' ,  //请求方式
-      success:(res)=>{
-        var that = this;
-        let josnStr = JSON.stringify(res)
-        let successmsg = JSON.parse(josnStr);
-        console.log("successmsg+"+successmsg);
-       // var data = JSON.parse(res.data)
-       let status = successmsg.code;
-       let msg = successmsg.msg;
-       if(status == -3){
-         wx.showToast({
-           title: '身份校验错误',
-           icon: 'none'
-         })
-       }
-       else if(status == -2){
-         wx.showToast({
-           title: '数据为空',
-           icon: 'none'
-         })
-       }
-       else if(status == -1){
-         wx.showToast({
-           title: '文件名为空',
-           icon:'none'
-         })
-       }
-       else{
-         wx.showToast({
-           title: '上传成功',
-           icon: "none",
-           duration: 5000,
-           mask: true,
-         })
-         refresh(that);
-       }
-      }
-    })
+    //选择为空
+    if(filename == ''){
+      wx.showToast({
+        title: '文件为空',
+        icon:'none'
+      })
+    }
+    else{
+      wx.uploadFile({
+        url: 'https://wkdday.com:8080/weekday/file/upload?folderId=' + folderId + '&fileName=' + filename,
+        filePath: that.data.path,
+        name: 'file',
+        header: {
+          'Content-Type': 'multipart/form-data',
+          'chartset': 'utf-8',
+          'token': token
+        },
+        formData: {
+          filename: that.data.filename,
+          folderId: that.data.folderId
+        },
+        method: 'POST',  //请求方式
+        success: (res) => {
+          if (res.statusCode != 200) {
+            wx.showToast({
+              title: '网络连接失败',
+              icon: 'none'
+            })
+            return
+          }
+          var that = this;
+          let status ;
+          let josnRes = JSON.parse(res.data);
+          //console.log(josnRes);
+          let msg ;
+          msg = res.data.msg;
+          status = josnRes.code;
+          if (status == -3) {
+            wx.showToast({
+              title: '身份校验错误',
+              icon: 'none'
+            })
+            that.setData({
+              filename:''
+            })
+          }
+          else if (status == -2) {
+            wx.showToast({
+              title: '数据为空',
+              icon: 'none'
+            })
+            that.setData({
+              filename: ''
+            })
+          }
+          else if (status == -1) {
+            wx.showToast({
+              title: '文件名为空',
+              icon: 'none'
+            })
+            that.setData({
+              filename: ''
+            })
+          }
+          else if (status == -4) {
+            console.log("file test");
+            wx.showToast({
+              title: '文件已经存在',
+              icon: 'none'
+            })
+            that.setData({
+              filename: ''
+            })
+          }
+          else if (status == -7) {
+            wx.showToast({
+              title: '文件夹不存在',
+              icon: 'none'
+            })
+            that.setData({
+              filename: ''
+            })
+          }
+          else {
+            wx.showToast({
+              title: '上传成功',
+              icon: "none",
+              duration: 5000,
+              mask: true,
+            })
+            refresh(that);
+          }
+        }
+      })
+    }
   },
   // ListTouch触摸开始
   ListTouchStart(e) {
@@ -247,6 +309,13 @@ Page({
         'token': token
       },
       success:(res)=>{
+        if (res.statusCode != 200) {
+          wx.showToast({
+            title: '网络连接失败',
+            icon: 'none'
+          })
+          return
+        }
         console.log("res.data:"+res.data)
         console.log(JSON.stringify(res.data));
         that.setData({
@@ -325,11 +394,9 @@ Page({
         console.log(res.tempFilePath)
         if (res.statusCode == 200) {
           //用200做一次判断
-          // console.log(wx.env.USER_DATA_PATH + "/" + e.currentTarget.dataset.name)
           wx.getFileSystemManager().saveFile({
             tempFilePath: res.tempFilePath,
             filePath: wx.env.USER_DATA_PATH + "/" + e.currentTarget.dataset.name,
-            // filePath: wx.env.USER_DATA_PATH + "/" + "test.md",
             success: function (res) {
               // 打开文档
               wx.showToast({

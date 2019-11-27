@@ -1,15 +1,22 @@
 //app.js
+function sleep(numberMillis) {
+  var now = new Date();
+  var exitTime = now.getTime() + numberMillis;
+  while (true) {
+    now = new Date();
+    if (now.getTime() > exitTime)
+      return;
+  }
+}
 App({
   onLaunch: function () {
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-
     let that = this;
     // 登录
-    wx.login({
-
+    /*wx.login({
       success(res) {
         console.log('登录', res.code)
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
@@ -26,6 +33,7 @@ App({
             },
             method: 'POST',
             success: function (res) {
+              sleep(5000)
               console.log(res.data)
               var code = res.data.code
               var msg = res.data.msg
@@ -71,7 +79,8 @@ App({
           icon: 'none'
         })
       }
-    })
+    })*/
+    
     // 获取用户信息
     wx.getSetting({
       success: res => {

@@ -4,6 +4,10 @@ var ip = 'https://wkdday.com:8080/weekday/mail/mailPre'
 let loginip = 'https://wkdday.com:8080/weekday/mail/mailbox'
 //condition1是收件箱 condition2是已发送
 function refreshInbox(that) {
+  wx.showLoading({
+    title: '数据加载中...',
+    mask: true
+  })
   let token = wx.getStorageSync('token')
   try {
     emailId = wx.getStorageSync('emailId')
@@ -22,6 +26,18 @@ function refreshInbox(that) {
         'token': token
       },
       success: function (res) {
+        wx.hideLoading()
+        if (res.statusCode != 200) {
+          wx.showToast({
+            title: '网络连接失败',
+            icon: 'none'
+          })
+          that.setData({
+            'status1': false,
+            'status2': true
+          })
+          return
+        }
         console.log(res.data)
         var code = res.data.code
         var msg = res.data.msg
@@ -36,17 +52,22 @@ function refreshInbox(that) {
           })
           return
         }
-        var inboxTemp = []
-        for(let i = 0, m = res.data.data.length; i < m; i++) {
+        let inboxTemp = []
+        var count = 0
+        for(let i = res.data.data.length - 1; i >= 0; i--) {
+          console.log('now count='+ count)
           inboxTemp.push(res.data.data[i])
-          var t = inboxTemp[i].mailFrom
+          console.log(inboxTemp)
+          let t = inboxTemp[count].mailFrom
           //如果mailFrom本身已经是空的了，不能再调用split方法，否则程序就崩溃了
           //另注：不确定是不是真的存在mailFrom是空的邮件
           //另另注：但是确定存在mailto是空的邮件
           if(t != '') {
             t = t.split(">")[0].split("<")[1]
-            inboxTemp[i].mailFrom = t
+            console.log(inboxTemp[count].mailFrom)
+            inboxTemp[count].mailFrom = t
           }
+          count = count + 1
         }
         that.setData({
           inbox: inboxTemp,
@@ -55,6 +76,7 @@ function refreshInbox(that) {
 
       },
       fail: function (res) {
+        wx.hideLoading()
         wx.showToast({
           title: '网络连接失败',
           icon: 'none'
@@ -70,6 +92,10 @@ function refreshInbox(that) {
 }
 
 function refreshSent(that) {
+  wx.showLoading({
+    title: '数据加载中...',
+    mask: true
+  })
   let token = wx.getStorageSync('token')
   try {
     emailId = wx.getStorageSync('emailId')
@@ -87,6 +113,18 @@ function refreshSent(that) {
         'token': token
       },
       success: function (res) {
+        wx.hideLoading()
+        if (res.statusCode != 200) {
+          wx.showToast({
+            title: '网络连接失败',
+            icon: 'none'
+          })
+          that.setData({
+            'status1': false,
+            'status2': true
+          })
+          return
+        }
         console.log(res.data)
         var code = res.data.code
         var msg = res.data.msg
@@ -101,17 +139,19 @@ function refreshSent(that) {
           })
           return
         }
-        var sentTemp = []
-        for (let i = 0, m = res.data.data.length; i < m; i++) {
+        let sentTemp = []
+        var count = 0
+        for (let i = res.data.data.length - 1; i >= 0; i--) {
           sentTemp.push(res.data.data[i])
-          var t = sentTemp[i].mailto
+          var t = sentTemp[count].mailto
           //如果mailto本身已经是空的了，不能再调用split方法，否则程序就崩溃了
           //另注：不确定是不是真的存在mailFrom是空的邮件
           //另另注：但是确定存在mailto是空的邮件
           if (t != '') {
             t = t.split(">")[0].split("<")[1]
-            sentTemp[i].mailto = t
+            sentTemp[count].mailto = t
           }
+          count = count + 1
         }
         that.setData({
           sent: sentTemp,
@@ -120,6 +160,7 @@ function refreshSent(that) {
 
       },
       fail: function (res) {
+        wx.hideLoading()
         wx.showToast({
           title: '网络连接失败',
           icon: 'none'
@@ -223,6 +264,7 @@ Page({
     var that = this
     if(that.data.status2 == true) {
       //登录界面没有下拉刷新功能
+      wx.stopPullDownRefresh()
       return
     }
     if(that.data.TabCur == 0) {
@@ -323,6 +365,12 @@ Page({
         'password': e.detail.value.password
       },
       success: function (res) {
+        if(res.statusCode != 200) {
+          wx.showToast({
+            title: '网络连接错误',
+            icon: 'none'
+          })  
+        }
         console.log(res.data)
         if (res.data.code != 0) {
           wx.showToast({

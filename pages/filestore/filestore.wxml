@@ -5,8 +5,7 @@
 <!-- 文件夹列表 --> 
 <view class="cu-list menu-avatar">
   <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{folders}}" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-target="move-box-{{index}}" wx:for-item="item">
-    <view class="cu-avatar round lg radious"style="background-image:url(/images/folder.png)" bindtap="skipToFile" data-id='{{item.id}}'>
-    </view>
+    <image src="/images/folder.png" class="cu-avatar round lg" bindtap="skipToFile" data-id='{{item.id}}'></image>
     <view class="content" bindtap="skipToFile" data-id='{{item.id}}'>{{item.name}}
     </view>
     <view class="move">

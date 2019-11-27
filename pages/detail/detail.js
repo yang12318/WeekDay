@@ -31,12 +31,19 @@ Page({
         'id': mailId
       },
       success: function(res) {
+        if(res.statusCode != 200) {
+          wx.showToast({
+            title: '网络连接失败',
+            icon: 'none'
+          })
+          return
+        }
         console.log(res.data)
         var code = res.data.code
         var msg = res.data.msg
         if(code != 0) {
           wx.showToast({
-            title: msg,
+            title: '获取邮件详情失败',
             icon: 'none'
           })
           return
@@ -95,6 +102,13 @@ Page({
                 'Content-Type': 'charset=UTF-8'
               },
               success: function(res) {
+                if (res.statusCode != 200) {
+                  wx.showToast({
+                    title: '网络连接失败',
+                    icon: 'none'
+                  })
+                  return
+                }
                 console.log('附件' + i + '信息：')
                 console.log(res.data)
                 let code = res.data.code
@@ -127,9 +141,7 @@ Page({
         that.setData({
           subject: subject,
           mailto: arr1[1],
-          //mailtoNick: arr1[0],
           mailFrom: arr2[1],
-          //mailFromNick: arr2[0],
           text: text,
           sentTime: sentTime,
 
@@ -207,11 +219,9 @@ Page({
         console.log(res.tempFilePath)
         if (res.statusCode == 200) {
           //用200做一次判断
-          // console.log(wx.env.USER_DATA_PATH + "/" + e.currentTarget.dataset.name)
           wx.getFileSystemManager().saveFile({
             tempFilePath: res.tempFilePath,
             filePath: wx.env.USER_DATA_PATH + "/" + e.currentTarget.dataset.name,
-            // filePath: wx.env.USER_DATA_PATH + "/" + "test.md",
             success: function (res) {
               // 打开文档
               wx.showToast({

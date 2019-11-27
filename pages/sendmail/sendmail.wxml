@@ -2,32 +2,17 @@
 <cu-custom bgColor="bg-gradual-lightorange" isBack="{{true}}">
   <view slot="backText">返回</view>
 </cu-custom>
-<form bindsubmit='sendmail' report-submit='true'>
-  <view class="input flex align-center">
-    <view class="input_title padding">
-      <text class="text-lg text-grey">收件人:</text> 
-    </view>
-    <view class="input_content">
-      <input name='mailto'></input>
-    </view>
+<form bindsubmit='sendmail' report-submit='true' class="bg-white">
+  <view class="cu-form-group solid-bottom">
+    <view class="title">收件人</view>
+    <input name='mailto' ></input>
   </view>
-  <view class="flex justify-center">
-    <view class="cutline bg-grey"></view>
+  <view class="cu-form-group solid-bottom">
+    <view class="title">主题</view>
+    <input name='subject' ></input>
   </view>
-  <view class="input flex align-center">
-    <view class="input_title padding">
-      <text class="text-lg text-grey">主题:</text> 
-    </view>
-    <view class="input_content">
-      <input name='subject'></input>
-    </view>
-  </view>
-  
-  <view class="flex justify-center">
-    <view class="cutline bg-grey"></view>
-  </view>
-  <view class="input padding">
-    <textarea placeholder="内容..." name='text' value='{{text}}'></textarea>
+  <view class="input padding cu-form-group">
+    <textarea placeholder="内容..." name='text' value='{{text}}' maxlength="1000"></textarea>
   </view>
   <button class="cu-btn round lg bg-orange post" form-type='submit'>点击发送</button>
 </form>
